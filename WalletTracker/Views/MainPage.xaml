@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage
+    x:Class="WalletTracker.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+    xmlns:viewModels="clr-namespace:WalletTracker.ViewModels;assembly=WalletTracker"
+    xmlns:views="clr-namespace:WalletTracker.Views"
+    android:TabbedPage.ToolbarPlacement="Bottom"
+    x:DataType="viewModels:MainPageViewModel"
+    BarBackgroundColor="{StaticResource Primary}"
+    SelectedTabColor="#28282B"
+    UnselectedTabColor="#c5c5c5">
+
+    <views:HomePage Title="" IconImageSource="ic_home" />
+    <views:TransactionPage Title="" IconImageSource="ic_transactions" />
+    <views:ReportsPage Title="" IconImageSource="ic_budget_monitor" />
+
+</TabbedPage>

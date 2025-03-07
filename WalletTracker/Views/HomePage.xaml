@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="WalletTracker.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:charts="clr-namespace:MAUI.GoogleChartsView;assembly=MAUI.GoogleChartsView"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:microCharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+    xmlns:models="clr-namespace:WalletTracker.Models"
+    xmlns:viewModels="clr-namespace:WalletTracker.ViewModels;assembly=WalletTracker"
+    xmlns:views="clr-namespace:WalletTracker.Views"
+    x:DataType="viewModels:HomePageViewModel"
+    BackgroundColor="{StaticResource Primary}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
+    </Page.Behaviors>
+
+    <Grid
+        Margin="16,0,16,16"
+        Padding="8"
+        IgnoreSafeArea="True"
+        RowDefinitions="Auto,Auto,*"
+        RowSpacing="8">
+
+        <Grid
+            Grid.Row="0"
+            Margin="0,0,0,8"
+            RowDefinitions="*,*">
+            <Label FontSize="Medium" Text="Good day!" />
+            <Label
+                Grid.Row="1"
+                FontAttributes="Bold"
+                FontSize="26"
+                Text="Edgar Allan" />
+        </Grid>
+
+        <Border
+            Grid.Row="1"
+            Background="White"
+            HeightRequest="300"
+            Stroke="#4a6f8c"
+            StrokeShape="RoundRectangle 10"
+            WidthRequest="350">
+            <Border.Shadow>
+                <Shadow
+                    Brush="White"
+                    Opacity="0.4"
+                    Offset="1,1" />
+            </Border.Shadow>
+            <StackLayout Margin="8" VerticalOptions="Fill">
+                <Label
+                    FontSize="Title"
+                    HorizontalTextAlignment="Center"
+                    Text="{Binding CurrentMonthText, StringFormat='{0} Wallet'}" />
+
+                <StackLayout Margin="8">
+                    <!--<microCharts:ChartView Chart="{Binding WalletChart}" HeightRequest="200" />-->
+                    <charts:GoogleChartsView
+                        x:Name="WalletPieChart"
+                        ChartType="PieChart"
+                        Data="{Binding WalletChartData}"
+                        HeightRequest="200"
+                        Options="{Binding ChartFormatOptions}"
+                        WidthRequest="300" />
+
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="Body"
+                        Text="{Binding TotalAmountPerIncome, StringFormat='Total Income: {0}'}" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="Body"
+                        Text="{Binding TotalAmountPerExpense, StringFormat='Total Expense: {0}'}" />
+                </StackLayout>
+            </StackLayout>
+        </Border>
+
+        <StackLayout
+            Grid.Row="2"
+            Margin="0,8,0,0"
+            Orientation="Vertical">
+            <Label
+                FontAttributes="Bold"
+                FontFamily="RalewayBold"
+                FontSize="24"
+                Text="Wallet Activities" />
+
+            <!--  Show ONLY TOP 3 or 5 RECORDS  -->
+            <CollectionView
+                Margin="0,8,0,8"
+                HeightRequest="300"
+                ItemsSource="{Binding BudgetList}"
+                ItemsUpdatingScrollMode="KeepItemsInView">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="16" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.EmptyViewTemplate>
+                    <DataTemplate>
+                        <Label HorizontalOptions="Center" Text="No available transactions" />
+                    </DataTemplate>
+                </CollectionView.EmptyViewTemplate>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:BudgetItemAccountModel">
+                        <Grid RowSpacing="0">
+                            <Border
+                                Grid.Row="0"
+                                Background="#ffffff"
+                                HeightRequest="100"
+                                Stroke="#ffffff"
+                                StrokeShape="RoundRectangle 25">
+                                <Border.Shadow>
+                                    <Shadow
+                                        Brush="#ffffff"
+                                        Opacity="0.35"
+                                        Offset="1,0" />
+                                </Border.Shadow>
+                                <Grid
+                                    Padding="8"
+                                    ColumnDefinitions="Auto, 140, *"
+                                    ColumnSpacing="8">
+                                    <Border
+                                        Grid.Column="0"
+                                        BackgroundColor="{Binding BudgetColor}"
+                                        HeightRequest="55"
+                                        WidthRequest="55">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="50" />
+                                        </Border.StrokeShape>
+                                        <!--<Border.Shadow>
+                                            <Shadow
+                                                Brush="{Binding BudgetColor}"
+                                                Opacity="0.8"
+                                                Offset="1,1" />
+                                        </Border.Shadow>-->
+                                        <Image
+                                            HeightRequest="30"
+                                            Source="{Binding BudgetSubTypeModel.Icon}"
+                                            WidthRequest="30" />
+                                    </Border>
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Margin="0"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="Medium"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="1"
+                                            Text="{Binding Description}" />
+                                        <Label FontSize="Small" Text="{Binding TransactionDate}" />
+                                    </VerticalStackLayout>
+                                    <Label
+                                        Grid.Column="2"
+                                        Margin="8"
+                                        FontAttributes="Bold"
+                                        FontSize="Small"
+                                        HorizontalOptions="End"
+                                        Text="{Binding Amount, StringFormat='{0:C2}'}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </StackLayout>
+    </Grid>
+
+
+</ContentPage>

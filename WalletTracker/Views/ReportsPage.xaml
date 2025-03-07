@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="WalletTracker.Views.ReportsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:charts="clr-namespace:MAUI.GoogleChartsView;assembly=MAUI.GoogleChartsView"
+    BackgroundColor="{StaticResource Primary}"
+    NavigationPage.HasNavigationBar="False">
+    <StackLayout
+        Margin="16"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
+        <Label FontSize="24" Text="Statistics" />
+        <charts:GoogleChartsView
+            x:Name="MyGoogleChartLine"
+            HeightRequest="200"
+            WidthRequest="300" />
+
+        <charts:GoogleChartsView
+            x:Name="MyGoogleChartPie"
+            HeightRequest="200"
+            WidthRequest="300" />
+
+
+        <charts:GoogleChartsView
+            x:Name="MyGoogleChartBar"
+            HeightRequest="200"
+            WidthRequest="300" />
+    </StackLayout>
+</ContentPage>
