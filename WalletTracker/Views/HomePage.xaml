@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:charts="clr-namespace:MAUI.GoogleChartsView;assembly=MAUI.GoogleChartsView"
+    xmlns:i18n="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:microCharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
     xmlns:models="clr-namespace:WalletTracker.Models"
@@ -12,6 +13,7 @@
     x:DataType="viewModels:HomePageViewModel"
     BackgroundColor="{StaticResource Primary}"
     NavigationPage.HasNavigationBar="False">
+
 
     <Page.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
@@ -28,7 +30,7 @@
             Grid.Row="0"
             Margin="0,0,0,8"
             RowDefinitions="*,*">
-            <Label FontSize="Medium" Text="Good day!" />
+            <Label FontSize="Medium" Text="{x:Static i18n:AppResources.Lbl_Goodday}" />
             <Label
                 Grid.Row="1"
                 FontAttributes="Bold"
