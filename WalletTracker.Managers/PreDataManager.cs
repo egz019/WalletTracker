@@ -7,16 +7,19 @@ public class PreDataManager : ManagerBase, IPreDataManager
 {
     private readonly IBudgetSubTypeRepository _budgetSubTypeRepository;
     private readonly IBudgetTypeRepository _budgetTypesRepository;
-    public PreDataManager(IManagerToolkit managerToolkit, IBudgetTypeRepository budgetTypesRepository, IBudgetSubTypeRepository budgetSubTypeRepository) : base(managerToolkit)
+    public PreDataManager(
+        IManagerToolkit managerToolkit,
+        IBudgetTypeRepository budgetTypesRepository,
+        IBudgetSubTypeRepository budgetSubTypeRepository) : base(managerToolkit)
     {
         _budgetSubTypeRepository = budgetSubTypeRepository;
         _budgetTypesRepository = budgetTypesRepository;
     }
 
-    public async Task PreloadData()
+    public void PreloadData()
     {
-        await PreloadBudgetType();
-        await PreloadBudgetSubTypes();
+        PreloadBudgetType();
+        PreloadBudgetSubTypes();
     }
 
     public async Task<List<BudgetTypeEntity>> GetBudgetTypeList()
@@ -42,71 +45,82 @@ public class PreDataManager : ManagerBase, IPreDataManager
         return new List<BudgetSubTypeEntity>();
     }
 
-    private async Task PreloadBudgetType()
+    private void PreloadBudgetType()
     {
-        await _budgetTypesRepository.SaveBudgetTypes(
+        _budgetTypesRepository.SaveBudgetTypes(
         [
             new BudgetTypesDto
             {
                 Code = "01",
-                Description = "Income"
+                Description = "Income",
+                IsAdd = true
             },
             new BudgetTypesDto
             {
                 Code = "02",
-                Description = "Expense"
+                Description = "Expense",
+                IsAdd = false
             }
         ]);
     }
 
-    private async Task PreloadBudgetSubTypes()
+    private void PreloadBudgetSubTypes()
     {
-        await _budgetSubTypeRepository.SaveBudgetSubTypes(
+        _budgetSubTypeRepository.SaveBudgetSubTypes(
         [
             new BudgetSubTypeDto
             {
                 Code = "BS01",
-                Description = "Salary"
+                Description = "Salary",
+                BudgetType = "01"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS02",
-                Description = "Savings"
+                Description = "Savings",
+                BudgetType = "01"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS03",
-                Description = "Utilities"
+                Description = "Utilities",
+                BudgetType = "02"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS04",
-                Description = "Transportation"
+                Description = "Transportation",
+                BudgetType = "02"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS05",
-                Description = "Food"
+                Description = "Food",
+                BudgetType = "02"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS06",
-                Description = "Shopping"
+                Description = "Shopping",
+                BudgetType = "02"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS07",
-                Description = "Miscellaneous"
+                Description = "Miscellaneous",
+                BudgetType = "02"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS08",
-                Description = "Health"
+                Description = "Health",
+                BudgetType = "02"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS09",
-                Description = "Mortgage"
+                Description = "Mortgage",
+                BudgetType = "02"
             }
         ]);
     }

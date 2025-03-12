@@ -117,22 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Lbl_CurrentMonthText" xml:space="preserve">
-    <value>{0} Wallet</value>
-  </data>
   <data name="Lbl_Goodday" xml:space="preserve">
     <value>Good day!</value>
-  </data>
-  <data name="Lbl_NoAvailableActivities" xml:space="preserve">
-    <value>No available activities</value>
-  </data>
-  <data name="Lbl_TotalExpense" xml:space="preserve">
-    <value>Total Expense:</value>
-  </data>
-  <data name="Lbl_TotalIncome" xml:space="preserve">
-    <value>Total Income:</value>
-  </data>
-  <data name="Lbl_WalletActivities" xml:space="preserve">
-    <value>Wallet Activities</value>
   </data>
 </root>

@@ -2,9 +2,9 @@
 
 namespace WalletTracker.Managers;
 
-public interface IPreDataManager
+public interface IPreDataManager : IManager
 {
     Task<List<BudgetSubTypeEntity>> GetBudgetSubTypeList();
     Task<List<BudgetTypeEntity>> GetBudgetTypeList();
-    Task PreloadData();
+    void PreloadData();
 }

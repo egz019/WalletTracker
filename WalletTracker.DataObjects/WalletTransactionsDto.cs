@@ -5,7 +5,7 @@ namespace WalletTracker.DataObjects;
 [Table("WalletTransactions")]
 public class WalletTransactionsDto : DataObjectBase, IWalletTransactionsDto
 {
-    [PrimaryKey]
+    [Indexed]
     public string TransactionId { get; set; }
     public string BudgetType { get; set; }
     public string BudgetSubType { get; set; }

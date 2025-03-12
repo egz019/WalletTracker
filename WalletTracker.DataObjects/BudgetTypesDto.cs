@@ -1,11 +1,10 @@
-﻿namespace WalletTracker.DataObjects;
+﻿using WalletTracker.DataObjects.Base;
+
+namespace WalletTracker.DataObjects;
 
 [Table("BudgetTypes")]
-public class BudgetTypesDto : IDataObjectBase, IBudgetTypesDto
+public class BudgetTypesDto : DataObjectBase, IBudgetTypesDto
 {
-    [PrimaryKey, AutoIncrement]
-    public int Id { get; set; }
-
     public string Code { get; set; }
 
     public string Description { get; set; }

@@ -23,11 +23,29 @@ public class MobileDatabase : IMobileDatabase
     public Task<List<T>> ToListAsync<T>(Expression<Func<T, bool>> expression) where T : class, IDataObjectBase, new()
         => _dbAsyncConnection.Table<T>().Where(expression).ToListAsync();
 
-    public async Task<int> InsertAsync<T>(T item) where T : class, IDataObjectBase, new()
-        => await _dbAsyncConnection.InsertAsync(item);
+    public int Insert<T>(T item) where T : class, IDataObjectBase, new()
+    {
+       item.Created = DateTime.UtcNow;
+       return _dbConnection.Insert(item);
+    }
 
-    public async Task<int> InsertAll<T>(IEnumerable<T> list) where T : class, IDataObjectBase, new()
-      => await _dbAsyncConnection.InsertAllAsync(list);
+    public void InsertAll<T>(IEnumerable<T> list) where T : class, IDataObjectBase, new()
+    {
+        foreach (var item in list)
+        {
+            item.Created = DateTime.UtcNow;
+        }
+        _dbConnection.InsertAll(list, typeof(T));
+    }
+
+    public async Task<int> InsertAsync<T>(T item) where T : class, IDataObjectBase, new()
+    {
+        item.Created = DateTime.UtcNow;
+        return await _dbAsyncConnection.InsertAsync(item);
+    }
+
+    public async Task<int> InsertAllAsync<T>(IEnumerable<T> list) where T : class, IDataObjectBase, new()
+      => await _dbAsyncConnection.InsertAllAsync(list, typeof(T));
 
     public async Task<int> UpdateAsync<T>(T item) where T : IDataObjectBase
     {
@@ -40,4 +58,41 @@ public class MobileDatabase : IMobileDatabase
 
     public Task<int> DeleteAsync<T>(int id) where T : IDataObjectBase, new()
         => _dbAsyncConnection.DeleteAsync<T>(id);
+
+    public async Task<int> InsertOrUpdateAsync<T>(T item) where T : class, IDataObjectBase, new()
+    {
+        if (item.Id != 0)
+        {
+            return await UpdateAsync(item);
+        }
+        else
+        {
+            return await InsertAsync(item);
+        }
+    }
+
+    public int InsertOrUpdate<T>(T item) where T : class, IDataObjectBase, new()
+    {
+        if (item.Id != 0)
+        {
+            return Update(item);
+        }
+        else
+        {
+            return Insert(item);
+        }
+    }
+
+    
+    public int Update<T>(T item) where T : IDataObjectBase
+    {
+        item.Modified = DateTime.UtcNow;
+        return _dbConnection.Update(item);
+    }
+
+
+    public T FirstOrDefault<T>(Expression<Func<T, bool>> expression) where T : class, IDataObjectBase, new()
+       => _dbConnection.Table<T>().FirstOrDefault(expression);
+
+
 }

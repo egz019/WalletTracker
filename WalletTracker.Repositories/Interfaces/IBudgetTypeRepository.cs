@@ -4,5 +4,9 @@ public  interface IBudgetTypeRepository : IRepository
 {
     Task<BudgetTypesDto> GetBudgetTypeAsync(string code);
     Task<List<BudgetTypesDto>> GetBudgetTypesListAsync();
-    Task SaveBudgetTypes(List<BudgetTypesDto> budgetTypes);
+    void SaveBudgetType(BudgetTypesDto budgetType);
+    void SaveBudgetTypes(List<BudgetTypesDto> budgetTypes);
+    //void SaveBudgetItemType(BudgetTypesDto budgetType);
+    //Task SaveBudgetType(BudgetTypesDto budgetType);
+    //Task SaveBudgetTypes(List<BudgetTypesDto> budgetTypes);
 }

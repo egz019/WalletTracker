@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WalletTracker.Common\WalletTracker.Common.csproj" />
     <ProjectReference Include="..\WalletTracker.Entities\WalletTracker.Entities.csproj" />
     <ProjectReference Include="..\WalletTracker.Repositories\WalletTracker.Repositories.csproj" />
   </ItemGroup>

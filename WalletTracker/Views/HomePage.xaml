@@ -4,13 +4,12 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:charts="clr-namespace:MAUI.GoogleChartsView;assembly=MAUI.GoogleChartsView"
-    xmlns:i18n="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
+    xmlns:lang="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:microCharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
     xmlns:models="clr-namespace:WalletTracker.Models"
     xmlns:viewModels="clr-namespace:WalletTracker.ViewModels;assembly=WalletTracker"
     xmlns:views="clr-namespace:WalletTracker.Views"
-    x:DataType="viewModels:HomePageViewModel"
     BackgroundColor="{StaticResource Primary}"
     NavigationPage.HasNavigationBar="False">
 
@@ -19,7 +18,7 @@
         <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
     </Page.Behaviors>
 
-    <Grid
+    <!--<Grid
         Margin="16,0,16,16"
         Padding="8"
         IgnoreSafeArea="True"
@@ -30,7 +29,7 @@
             Grid.Row="0"
             Margin="0,0,0,8"
             RowDefinitions="*,*">
-            <Label FontSize="Medium" Text="{x:Static i18n:AppResources.Lbl_Goodday}" />
+            <Label FontSize="Medium" Text="{x:Static lang:AppResources.Lbl_Goodday}" />
             <Label
                 Grid.Row="1"
                 FontAttributes="Bold"
@@ -58,7 +57,9 @@
                     Text="{Binding CurrentMonthText, StringFormat='{0} Wallet'}" />
 
                 <StackLayout Margin="8">
-                    <!--<microCharts:ChartView Chart="{Binding WalletChart}" HeightRequest="200" />-->
+    -->
+    <!--<microCharts:ChartView Chart="{Binding WalletChart}" HeightRequest="200" />-->
+    <!--
                     <charts:GoogleChartsView
                         x:Name="WalletPieChart"
                         ChartType="PieChart"
@@ -89,7 +90,9 @@
                 FontSize="24"
                 Text="Wallet Activities" />
 
-            <!--  Show ONLY TOP 3 or 5 RECORDS  -->
+    -->
+    <!--  Show ONLY TOP 3 or 5 RECORDS  -->
+    <!--
             <CollectionView
                 Margin="0,8,0,8"
                 HeightRequest="300"
@@ -132,12 +135,14 @@
                                         <Border.StrokeShape>
                                             <RoundRectangle CornerRadius="50" />
                                         </Border.StrokeShape>
-                                        <!--<Border.Shadow>
+    -->
+    <!--<Border.Shadow>
                                             <Shadow
                                                 Brush="{Binding BudgetColor}"
                                                 Opacity="0.8"
                                                 Offset="1,1" />
                                         </Border.Shadow>-->
+    <!--
                                         <Image
                                             HeightRequest="30"
                                             Source="{Binding BudgetSubTypeModel.Icon}"
@@ -171,7 +176,7 @@
 
             </CollectionView>
         </StackLayout>
-    </Grid>
+    </Grid>-->
 
 
 </ContentPage>

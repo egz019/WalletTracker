@@ -39,7 +39,12 @@ public class WalletTransactionsRepository : RepositoryBase, IWalletTransactionsR
         return await DB.InsertAsync(walletTransaction);
     }
 
-	public async Task<int> DeleteWalletTransactionAsync(string transactionId)
+    public void SaveWalletTransactions(List<WalletTransactionsDto> walletTransactions)
+    {
+        DB.InsertAll(walletTransactions);
+    }
+
+    public async Task<int> DeleteWalletTransactionAsync(string transactionId)
 	{
 		var transaction = await DB.FirstOrDefaultAsync<WalletTransactionsDto>(x => x.TransactionId == transactionId);
 

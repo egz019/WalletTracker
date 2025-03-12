@@ -1,24 +1,36 @@
-﻿namespace WalletTracker;
+﻿using Mapster;
+
+namespace WalletTracker;
 
 internal static class PrismStartup
 {
     public static void Configure(PrismAppBuilder builder)
     {
-        builder.RegisterTypes(RegisterTypes)
+        builder.RegisterTypes(RegisterModules)
             .ConfigureModuleCatalog(ConfigureModuleCatalog)
             .OnInitialized(OnInitialized)
             .CreateWindow(async (containerRegistry, navigationService) =>
             {
-                await navigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(MainPage)}");
+                await InitAsync(containerRegistry, navigationService);
             });
     }
 
-    private static void RegisterTypes(IContainerRegistry containerRegistry)
+    private async static Task InitAsync(IContainerProvider containerProvider, INavigationService navigationService)
     {
-        containerRegistry.RegisterViews();
-        containerRegistry.RegisterServices();
-        containerRegistry.RegisterRepositories();
+        //Pre-loaded data here
+        var appContentManager = containerProvider.Resolve<IAppContentManager>();
+        appContentManager.PreloadAppData();
+
+        await navigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(MainPage)}");
+    }
+
+    private static void RegisterModules(IContainerRegistry containerRegistry)
+    {
         containerRegistry.RegisterManagers();
+        containerRegistry.RegisterViews();
+        containerRegistry.RegisterRepositories();
+        
+        containerRegistry.RegisterServices();
     }
 
     private static void RegisterViews(this IContainerRegistry containerRegistry)
@@ -37,6 +49,7 @@ internal static class PrismStartup
 
     private static void RegisterManagers(this IContainerRegistry containerRegistry)
     {
+        containerRegistry.RegisterInstance(TypeAdapterConfig.GlobalSettings);
         containerRegistry.RegisterScoped<IMapper, MapsterMapper.ServiceMapper>();
         containerRegistry.RegisterSingleton<IServiceMapper, WalletTracker.Managers.ServiceMapper.ServiceMapper>();
         containerRegistry.RegisterTypes(typeof(IManager));
@@ -49,7 +62,6 @@ internal static class PrismStartup
 
     private static void OnInitialized(IContainerProvider container)
     {
-        //Save Pre-loaded data here
         
     }
 

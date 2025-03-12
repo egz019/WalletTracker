@@ -22,7 +22,7 @@ namespace WalletTracker.Localization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AppResources {
+    public class AppResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace WalletTracker.Localization {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WalletTracker.Localization.AppResources", typeof(AppResources).Assembly);
@@ -51,7 +51,7 @@ namespace WalletTracker.Localization {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,56 +61,11 @@ namespace WalletTracker.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Wallet.
-        /// </summary>
-        internal static string Lbl_CurrentMonthText {
-            get {
-                return ResourceManager.GetString("Lbl_CurrentMonthText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Good day!.
         /// </summary>
-        internal static string Lbl_Goodday {
+        public static string Lbl_Goodday {
             get {
                 return ResourceManager.GetString("Lbl_Goodday", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No available activities.
-        /// </summary>
-        internal static string Lbl_NoAvailableActivities {
-            get {
-                return ResourceManager.GetString("Lbl_NoAvailableActivities", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total Expense:.
-        /// </summary>
-        internal static string Lbl_TotalExpense {
-            get {
-                return ResourceManager.GetString("Lbl_TotalExpense", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Total Income:.
-        /// </summary>
-        internal static string Lbl_TotalIncome {
-            get {
-                return ResourceManager.GetString("Lbl_TotalIncome", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wallet Activities.
-        /// </summary>
-        internal static string Lbl_WalletActivities {
-            get {
-                return ResourceManager.GetString("Lbl_WalletActivities", resourceCulture);
             }
         }
     }

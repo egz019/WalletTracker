@@ -7,7 +7,10 @@ public class WalletTransactionsManager : ManagerBase, IWalletTransactionsManager
 {
     private readonly IWalletTransactionsRepository _walletTransactionsRepository;
 
-    public WalletTransactionsManager(IManagerToolkit managerToolkit, IWalletTransactionsRepository walletTransactionsRepository) : base(managerToolkit)
+    public WalletTransactionsManager(
+        IManagerToolkit managerToolkit,
+        IWalletTransactionsRepository walletTransactionsRepository)
+        : base(managerToolkit)
     {
         _walletTransactionsRepository = walletTransactionsRepository;
     }
@@ -33,6 +36,11 @@ public class WalletTransactionsManager : ManagerBase, IWalletTransactionsManager
     public async Task<bool> SaveWalletTransactionAsync(WalletTransactionsEntity walletTransaction)
     {
         return Convert.ToBoolean(await _walletTransactionsRepository.SaveWalletTransactionAsync(ManagerToolkit.Map<WalletTransactionsDto>(walletTransaction)));
+    }
+
+    public void SaveWalletTransactions(List<WalletTransactionsEntity> walletTransactions)
+    {
+        _walletTransactionsRepository.SaveWalletTransactions(ManagerToolkit.Map<List<WalletTransactionsDto>>(walletTransactions));
     }
 
     public async Task<bool> DeleteWalletTransactionAsync(string transactionId)

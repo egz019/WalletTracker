@@ -20,8 +20,8 @@ public class BudgetSubTypeRepository : RepositoryBase, IBudgetSubTypeRepository
         return budgetTypes;
     }
 
-    public async Task SaveBudgetSubTypes(List<BudgetSubTypeDto> budgetSubTypes)
+    public void SaveBudgetSubTypes(List<BudgetSubTypeDto> budgetSubTypes)
     {
-        await DB.InsertAll(budgetSubTypes);
+        DB.InsertAll(budgetSubTypes);
     }
 }

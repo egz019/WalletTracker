@@ -1,6 +1,7 @@
-﻿namespace WalletTracker.Localization;
-
-public class DoNotDelete
+﻿namespace WalletTracker.Localization
 {
+    public class DoNotDelete
+    {
 
+    }
 }
