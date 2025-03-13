@@ -1,5 +1,18 @@
 ﻿using CommunityToolkit.Maui;
 using Microcharts.Maui;
+using WalletTracker.Controls;
+
+#if __ANDROID__
+using Microsoft.Maui.Controls.Compatibility.Platform.Android;
+using WalletTracker.Platforms.Android;
+#elif __IOS__
+using Microsoft.Maui.Controls.Compatibility.Platform.iOS;
+using WalletTracker.Platforms.iOS;
+#endif
+
+
+using Microsoft.Maui.Controls.Handlers.Compatibility;
+
 
 namespace WalletTracker;
 
@@ -27,7 +40,22 @@ public static class MauiProgram
         //#if DEBUG
         //       builder.Logging.Do(builder.Services, LogLevel.Debug);
         //#endif
+        AddHandlers();
 
         return builder.Build();
+    }
+
+    private static void AddHandlers()
+    {
+        Microsoft.Maui.Handlers.EntryHandler.ElementMapper.AppendToMapping(nameof(BorderedEntry), (handler, view)
+         => 
+         {
+            #if __ANDROID__ || __IOS__
+                if (view is BorderedEntry borderedEntry)
+                {
+                    EntryMapper.Map(handler, borderedEntry);
+                }
+            #endif
+         });
     }
 }

@@ -39,7 +39,7 @@ internal static class PrismStartup
     {
         containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
         containerRegistry.RegisterForNavigation<HomePage, HomePageViewModel>();
-        containerRegistry.RegisterForNavigation<TransactionPage>();
+        containerRegistry.RegisterForNavigation<TransactionPage, TransactionPageViewModel>();
         containerRegistry.RegisterForNavigation<ReportsPage>();
     }
 
