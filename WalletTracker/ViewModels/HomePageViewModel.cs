@@ -20,10 +20,13 @@ public partial class HomePageViewModel : PageViewModelBase
 
     protected override async Task InitializeAsync(INavigationParameters parameters)
     {
-        base.InitializeAsync(parameters);
+        
+        await base.InitializeAsync(parameters);
 
         CurrentMonthText = DateTime.Now.ToString("MMMM").ToUpper() + " " + DateTime.Now.Year;
 
+        IsBusy = true;
+        
         _budgetTypes = await _preDataManager.GetBudgetTypeList();
         _budgetSubTypes =  await _preDataManager.GetBudgetSubTypeList();
 
@@ -31,10 +34,16 @@ public partial class HomePageViewModel : PageViewModelBase
         BudgetList = transactions;
 
         GetTotalAmountPerBudgetType();
+
+        ChartFormatOptions = GetChartFormat();
+        WalletChartData = GetChartData();
+
+        IsBusy = false;
         //return Task.CompletedTask;
     }
 
-    public List<WalletTransactionsEntity> BudgetList;
+    [ObservableProperty]
+    private List<WalletTransactionsEntity> _budgetList;
 
     [ObservableProperty]
     private string _totalAmountPerIncome;
@@ -45,36 +54,99 @@ public partial class HomePageViewModel : PageViewModelBase
     [ObservableProperty]
     private string _currentMonthText;
 
+    [ObservableProperty]
+    private bool _isBusy = false;
+
     private void GetTotalAmountPerBudgetType()
     {
-        if (BudgetList.Count <= 0)
+        if (!BudgetList.Any())
         {
             return;
         }
 
         var groupedItems = BudgetList
-               .GroupBy(x => x.BudgetType)
-               .Select(x => new
-               {
-                   BudgetType = x.Key,
-                   TotalAmount = (float?)x.Sum(y => y.Amount)
-               });
+        .GroupBy(x => x.BudgetType)
+        .Select(x => new 
+        { 
+            BudgetType = x.Key, 
+            TotalAmount = (float?)x.Sum(y => y.Amount)
+        });
 
-        TotalAmountPerIncome = groupedItems.FirstOrDefault(_ => _.BudgetType == "Income")?.TotalAmount.ToString();
-        TotalAmountPerExpense = groupedItems.FirstOrDefault(_ => _.BudgetType == "Expense")?.TotalAmount.ToString();
+        TotalAmountPerIncome = groupedItems.FirstOrDefault(_ => _.BudgetType == "01")?.TotalAmount.ToString();
+        TotalAmountPerExpense = groupedItems.FirstOrDefault(_ => _.BudgetType == "02")?.TotalAmount.ToString();
     }
 
-    //private readonly ObservableCollection<BudgetItemAccountModel> _budgetItems =
-    //[
-    //    new (){Id = 1, BudgetType = BudgetType.Income, BudgetSubTypeModel = new BudgetSubTypeModel(BudgetSubType.Salary), Amount = 30500, Description = "Main Salary to Forecastiing and Planning"},
-    //    new (){Id = 2, BudgetType = BudgetType.Income, BudgetSubTypeModel = new BudgetSubTypeModel(BudgetSubType.Salary), Amount = 7500, Description = "Side Hustle Salary"},
-    //    new (){Id = 3, BudgetType = BudgetType.Expense, BudgetSubTypeModel = new BudgetSubTypeModel(BudgetSubType.Utilities), Amount = 5200, Description = "Electric bill"},
-    //    new (){Id = 4, BudgetType = BudgetType.Expense, BudgetSubTypeModel = new BudgetSubTypeModel(BudgetSubType.Utilities), Amount = 8200, Description = "Apartment rent"},
-    //    new (){Id = 5, BudgetType = BudgetType.Expense, BudgetSubTypeModel = new BudgetSubTypeModel(BudgetSubType.Food), Amount = 4000, Description = "Groceries"},
-    //    new (){Id = 6, BudgetType = BudgetType.Expense, BudgetSubTypeModel = new BudgetSubTypeModel(BudgetSubType.Utilities), Amount = 1900, Description = "Gas"},
-    //    new (){Id = 7, BudgetType = BudgetType.Expense, BudgetSubTypeModel = new BudgetSubTypeModel(BudgetSubType.Miscellaneous), Amount = 1000, Description = "Donation"},
-    //];
+    [ObservableProperty]
+     private object _walletChartData;
 
+     private object GetChartData()
+    {
+        if (!BudgetList.Any())
+        {
+            return new object();
+        }
+
+        var groupedItems = BudgetList
+        .GroupBy(x => _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description)
+        .Select(x => new
+        { 
+            Transaction = x.Key, 
+            Amount = (float?)x.Sum(y => y.Amount)
+        });
+
+        var columnData = new List<object>()
+        {
+            new { id = "", label = "Budget Sub Type", pattern = "", type = "string" },
+            new { id = "", label = "Total Amount", pattern = "", type = "number" }
+        };
+
+        var rowsData = new List<object>();
+
+        foreach (var item in groupedItems)
+        {
+            rowsData.Add(new { c = new List<object> { new { v = item.Transaction }, new { v = item.Amount } } });
+        }
+
+        return new
+        {
+            cols = columnData,
+            rows = rowsData
+        };
+    }
+
+    [ObservableProperty]
+    private object _chartFormatOptions;
+    
+
+    private object GetChartFormat()
+     => new
+    {
+        fontSize = 10,
+        fontName = "Raleway-Regular",
+        chartArea = new
+        {
+            width = "90%",
+            height = "70%"
+        },
+        legend = new
+        {
+            position = "right",
+            textStyle = new { fontSize = 10 },
+
+        },
+        tooltip = new
+        {
+            isHtml = true,
+            showColorCode = true
+        },
+        animation = new
+        {
+            duration = 1000,
+            easing = "out",
+            startup = true
+        },
+        pieHole = 0.35,
+    };
 
     //public Chart WalletChart => GetChart();
 
@@ -111,74 +183,6 @@ public partial class HomePageViewModel : PageViewModelBase
     //    };
     //}
 
-
-
-    //public object WalletChartData => GetChartData();
-
-    //private object GetChartData()
-    //{
-    //    //if (BudgetList.Count <= 0)
-    //    //{
-    //    //    return new object;
-    //    //}
-
-    //    var groupedItems = BudgetList
-    //            .GroupBy(x => _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description)
-    //            .Select(x => new
-    //            {
-    //                Transaction = x.Key,
-    //                Amount = (float?)x.Sum(y => y.Amount)
-    //            });
-
-    //    var columnData = new List<object>()
-    //        {
-    //            new { id = "", label = "Budget Sub Type", pattern = "", type = "string" },
-    //            new { id = "", label = "Total Amount", pattern = "", type = "number" }
-    //        };
-
-    //    var rowsData = new List<object>();
-
-    //    foreach (var item in groupedItems)
-    //    {
-    //        rowsData.Add(new { c = new List<object> { new { v = item.Transaction }, new { v = item.Amount } } });
-    //    }
-
-    //    return new
-    //    {
-    //        cols = columnData,
-    //        rows = rowsData
-    //    };
-    //}
-
-    //public static object ChartFormatOptions => new
-    //{
-    //    fontSize = 10,
-    //    fontName = "Raleway-Regular",
-    //    chartArea = new
-    //    {
-    //        width = "90%",
-    //        height = "70%"
-    //    },
-    //    legend = new
-    //    {
-    //        position = "right",
-    //        textStyle = new { fontSize = 10 },
-
-    //    },
-    //    tooltip = new
-    //    {
-    //        isHtml = true,
-    //        showColorCode = true
-    //    },
-    //    animation = new
-    //    {
-    //        duration = 1000,
-    //        easing = "out",
-    //        startup = true
-    //    },
-    //    pieHole = 0.35,
-    //};
-
     //private SKColor GetBudgetSubTypeLegendColor(string budgetSubType)
     //{
     //    return budgetSubType switch
@@ -194,8 +198,6 @@ public partial class HomePageViewModel : PageViewModelBase
     //    };
     //}
 
-
-
     //private List<BudgetItemAccountModel> GetBudgetList()
     //{
     //    _budgetItems.AddRange(new BudgetItemAccountModel[] {
@@ -210,9 +212,6 @@ public partial class HomePageViewModel : PageViewModelBase
 
     //    return _budgetItems;
     //}
-
-   
-   
 
     //[RelayCommand(AllowConcurrentExecutions = false)]
     //private async Task TryMeTapped()

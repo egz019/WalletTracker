@@ -7,18 +7,25 @@
     xmlns:lang="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:microCharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:models="clr-namespace:WalletTracker.Models"
     xmlns:viewModels="clr-namespace:WalletTracker.ViewModels;assembly=WalletTracker"
     xmlns:views="clr-namespace:WalletTracker.Views"
     BackgroundColor="{StaticResource Primary}"
-    NavigationPage.HasNavigationBar="False">
+    NavigationPage.HasNavigationBar="False"
+    x:DataType="viewModels:HomePageViewModel">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Page.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
     </Page.Behaviors>
 
-    <!--<Grid
+    <Grid
         Margin="16,0,16,16"
         Padding="8"
         IgnoreSafeArea="True"
@@ -36,6 +43,12 @@
                 FontSize="26"
                 Text="Edgar Allan" />
         </Grid>
+
+        <!-- <ActivityIndicator Grid.Row="1"
+                Color="Gray"
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="Center" /> -->
 
         <Border
             Grid.Row="1"
@@ -56,17 +69,14 @@
                     HorizontalTextAlignment="Center"
                     Text="{Binding CurrentMonthText, StringFormat='{0} Wallet'}" />
 
-                <StackLayout Margin="8">
-    -->
-    <!--<microCharts:ChartView Chart="{Binding WalletChart}" HeightRequest="200" />-->
-    <!--
+                <StackLayout Margin="8" VerticalOptions="Fill">
                     <charts:GoogleChartsView
-                        x:Name="WalletPieChart"
-                        ChartType="PieChart"
-                        Data="{Binding WalletChartData}"
+                        x:Name= "WalletPieChart"
+                        ChartType= "PieChart"
+                        Data= "{Binding WalletChartData}"
+                        Options = "{Binding ChartFormatOptions}"
                         HeightRequest="200"
-                        Options="{Binding ChartFormatOptions}"
-                        WidthRequest="300" />
+                        WidthRequest="300"/>
 
                     <Label
                         FontAttributes="Bold"
@@ -89,11 +99,8 @@
                 FontFamily="RalewayBold"
                 FontSize="24"
                 Text="Wallet Activities" />
-
-    -->
     <!--  Show ONLY TOP 3 or 5 RECORDS  -->
-    <!--
-            <CollectionView
+            <!-- <CollectionView
                 Margin="0,8,0,8"
                 HeightRequest="300"
                 ItemsSource="{Binding BudgetList}"
@@ -109,7 +116,7 @@
                 </CollectionView.EmptyViewTemplate>
 
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:BudgetItemAccountModel">
+                    <DataTemplate x:DataType="models:WalletTransactionEntity">
                         <Grid RowSpacing="0">
                             <Border
                                 Grid.Row="0"
@@ -135,14 +142,13 @@
                                         <Border.StrokeShape>
                                             <RoundRectangle CornerRadius="50" />
                                         </Border.StrokeShape>
-    -->
-    <!--<Border.Shadow>
+    <Border.Shadow>
                                             <Shadow
                                                 Brush="{Binding BudgetColor}"
                                                 Opacity="0.8"
                                                 Offset="1,1" />
-                                        </Border.Shadow>-->
-    <!--
+                                        </Border.Shadow>
+    
                                         <Image
                                             HeightRequest="30"
                                             Source="{Binding BudgetSubTypeModel.Icon}"
@@ -174,9 +180,8 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
 
-            </CollectionView>
+            </CollectionView> -->
         </StackLayout>
-    </Grid>-->
-
+    </Grid>
 
 </ContentPage>

@@ -5,7 +5,6 @@ public partial class HomePage : ContentPage
 	public HomePage()
 	{
 		InitializeComponent();
-
         //WalletPieChart.Options = new
         //{
         //    fontSize = 10,
