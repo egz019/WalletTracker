@@ -7,12 +7,19 @@
     xmlns:lang="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:microCharts="clr-namespace:Microcharts.Maui;assembly=Microcharts.Maui"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:models="clr-namespace:WalletTracker.Models"
     xmlns:viewModels="clr-namespace:WalletTracker.ViewModels;assembly=WalletTracker"
     xmlns:views="clr-namespace:WalletTracker.Views"
     BackgroundColor="{StaticResource Primary}"
-    NavigationPage.HasNavigationBar="False">
+    NavigationPage.HasNavigationBar="False"
+    x:DataType="viewModels:HomePageViewModel">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <Page.Behaviors>
         <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
@@ -36,6 +43,12 @@
                 FontSize="24"
                 Text="Edgar Allan" />
         </Grid>
+
+        <!-- <ActivityIndicator Grid.Row="1"
+                Color="Gray"
+                IsRunning="{Binding IsBusy}"
+                IsVisible="{Binding IsBusy}"
+                VerticalOptions="Center" /> -->
 
         <Border
             Grid.Row="1"
@@ -105,8 +118,6 @@
                 FontFamily="RalewayBold"
                 FontSize="24"
                 Text="Wallet Activities" />
-
-    -->
     <!--  Show ONLY TOP 3 or 5 RECORDS  -->
             <CollectionView
                 Margin="0,8,0,8"
@@ -156,8 +167,8 @@
                                                 Brush="{Binding BudgetType.BudgetColor}"
                                                 Opacity="0.8"
                                                 Offset="1,1" />
-                                        </Border.Shadow>-->
-    <!--
+                                        </Border.Shadow>
+    
                                         <Image
                                             HeightRequest="30"
                                             Source="{Binding BudgetSubType.Icon}"
@@ -189,14 +200,13 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             <CollectionView.FooterTemplate>
-                <DataTemplate>
-                    <Button Text="View More" Command="{Binding viewModels.ViewMoreCommand}" BackgroundColor="{x:StaticResource Secondary}"/>
+                <DataTemplate x:DataType="viewModels:HomePageViewModel">
+                    <Button Text="View More" Command="{Binding ViewMoreCommand}" BackgroundColor="{x:StaticResource Secondary}"/>
                 </DataTemplate>
             </CollectionView.FooterTemplate>
             </CollectionView>
             <Button Text="View More" Grid.Row="2" Command="{Binding ViewMoreCommand}" BackgroundColor="{x:StaticResource Secondary}"/>
         </StackLayout>
-    </Grid>-->
-
+    </Grid>
 
 </ContentPage>

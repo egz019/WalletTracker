@@ -139,7 +139,9 @@ public partial class HomePageViewModel : PageViewModelBase
 
     [ObservableProperty]
     private object _chartFormatOptions;
-    
+
+    public bool IsBusy { get; private set; }
+
     private object GetChartFormat()
      => new
     {

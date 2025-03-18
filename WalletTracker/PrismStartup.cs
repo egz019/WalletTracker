@@ -1,4 +1,6 @@
 ﻿using Mapster;
+using WalletTracker.Repositories;
+using WalletTracker.Repositories.Interfaces;
 
 namespace WalletTracker;
 
@@ -37,14 +39,19 @@ internal static class PrismStartup
     {
         containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
         containerRegistry.RegisterForNavigation<HomePage, HomePageViewModel>();
-        containerRegistry.RegisterForNavigation<TransactionPage>();
+        containerRegistry.RegisterForNavigation<TransactionPage, TransactionPageViewModel>();
         containerRegistry.RegisterForNavigation<ReportsPage>();
     }
 
     private static void RegisterRepositories(this IContainerRegistry containerRegistry)
     {
         containerRegistry.RegisterSingleton<IAppDatabase, AppDatabase>();
-        containerRegistry.RegisterTypes(typeof(IRepository));
+        //containerRegistry.RegisterTypes(typeof(IRepository));
+        containerRegistry.RegisterSingleton<IMobileDatabase, MobileDatabase>();
+        containerRegistry.RegisterSingleton<IBudgetTypeRepository, BudgetTypeRepository>();
+        containerRegistry.RegisterSingleton<IBudgetSubTypeRepository, BudgetSubTypeRepository>();
+        containerRegistry.RegisterSingleton<IPreferenceRespository, PreferenceRepository>();
+        containerRegistry.RegisterSingleton<IWalletTransactionsRepository, WalletTransactionsRepository>();
     }
 
     private static void RegisterManagers(this IContainerRegistry containerRegistry)
@@ -52,7 +59,12 @@ internal static class PrismStartup
         containerRegistry.RegisterInstance(TypeAdapterConfig.GlobalSettings);
         containerRegistry.RegisterScoped<IMapper, MapsterMapper.ServiceMapper>();
         containerRegistry.RegisterSingleton<IServiceMapper, WalletTracker.Managers.ServiceMapper.ServiceMapper>();
-        containerRegistry.RegisterTypes(typeof(IManager));
+        //containerRegistry.RegisterTypes(typeof(IManager));
+        containerRegistry.RegisterSingleton<IManagerToolkit, ManagerToolkit>();
+        containerRegistry.RegisterSingleton<IAppContentManager, AppContentManager>();
+        containerRegistry.RegisterSingleton<IPreDataManager, PreDataManager>();
+        containerRegistry.RegisterSingleton<IPreferenceManager, PreferenceManager>();
+        containerRegistry.RegisterSingleton<IWalletTransactionsManager, WalletTransactionsManager>();
     }
 
     private static void RegisterServices(this IContainerRegistry containerRegistry)
