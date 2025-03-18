@@ -10,7 +10,6 @@ public class BudgetTypesDto : DataObjectBase, IBudgetTypesDto
     public string Description { get; set; }
 
     public bool IsAdd { get; set; }
-
     public DateTime Created { get; set; }
 
     public DateTime Modified { get; set; }

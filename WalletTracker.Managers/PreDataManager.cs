@@ -72,55 +72,64 @@ public class PreDataManager : ManagerBase, IPreDataManager
             {
                 Code = "BS01",
                 Description = "Salary",
-                BudgetType = "01"
+                BudgetType = "01",
+                Icon = "ic_income.svg"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS02",
                 Description = "Savings",
-                BudgetType = "01"
+                BudgetType = "01",
+                Icon = "ic_savings.svg"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS03",
                 Description = "Utilities",
-                BudgetType = "02"
+                BudgetType = "02",
+                Icon = "ic_utilities.svg"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS04",
                 Description = "Transportation",
-                BudgetType = "02"
+                BudgetType = "02",
+                Icon = "ic_transportation.svg"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS05",
                 Description = "Food",
-                BudgetType = "02"
+                BudgetType = "02",
+                Icon = "ic_food.svg"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS06",
                 Description = "Shopping",
-                BudgetType = "02"
+                BudgetType = "02",
+                Icon = "ic_shopping.svg"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS07",
                 Description = "Miscellaneous",
-                BudgetType = "02"
+                BudgetType = "02",
+                Icon = "ic_miscellaneous.svg"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS08",
                 Description = "Health",
-                BudgetType = "02"
+                BudgetType = "02",
+                Icon = "ic_health.svg"
             },
             new BudgetSubTypeDto
             {
                 Code = "BS09",
                 Description = "Mortgage",
-                BudgetType = "02"
+                BudgetType = "02",
+                Icon = "ic_mortgage.svg"
             }
         ]);
     }

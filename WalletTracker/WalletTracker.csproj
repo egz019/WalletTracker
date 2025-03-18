@@ -12,7 +12,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 
     <!-- Display name -->
-    <ApplicationTitle>WalletTracker</ApplicationTitle>
+    <ApplicationTitle>Wallet Tracker</ApplicationTitle>
 
     <!-- App Identifier -->
     <ApplicationId>com.companyname.wallettracker</ApplicationId>

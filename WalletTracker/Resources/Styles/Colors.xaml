@@ -2,8 +2,11 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <Color x:Key="Primary">#f6f6f6</Color>
-    <Color x:Key="Secondary">#3FA0EF</Color>
+    <!-- <Color x:Key="Primary">#f6f6f6</Color> -->
+    <Color x:Key="Primary">#CCD4DD</Color>
+    <!-- <Color x:Key="Secondary">#3FA0EF</Color> -->
+    <Color x:Key="Secondary">#141E1D</Color>
+    <!-- <Color x:Key="Tertiary">#446063</Color> -->
     <Color x:Key="Tertiary">White</Color>
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>

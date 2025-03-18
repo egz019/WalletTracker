@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Input;
+using WalletTracker.Common;
 using WalletTracker.Entities;
 using WalletTracker.Managers;
 
@@ -12,6 +14,8 @@ public partial class HomePageViewModel : PageViewModelBase
     private List<BudgetSubTypeEntity> _budgetSubTypes;
     private List<BudgetTypeEntity> _budgetTypes;
 
+    private List<WalletTransactionsEntity> _transactions;
+
     public HomePageViewModel(BaseServices baseServices, IWalletTransactionsManager walletTransactionManager, IPreDataManager preDataManager) : base(baseServices)
     {
         _walletTransactionManager = walletTransactionManager;
@@ -20,7 +24,6 @@ public partial class HomePageViewModel : PageViewModelBase
 
     protected override async Task InitializeAsync(INavigationParameters parameters)
     {
-        
         await base.InitializeAsync(parameters);
 
         CurrentMonthText = DateTime.Now.ToString("MMMM").ToUpper() + " " + DateTime.Now.Year;
@@ -30,20 +33,45 @@ public partial class HomePageViewModel : PageViewModelBase
         _budgetTypes = await _preDataManager.GetBudgetTypeList();
         _budgetSubTypes =  await _preDataManager.GetBudgetSubTypeList();
 
-        var transactions = await _walletTransactionManager.GetListOfWalletTransactionsAsync();
-        BudgetList = transactions;
+        _transactions = await _walletTransactionManager.GetListOfWalletTransactionsAsync();
+        WalletTransactionList = _transactions.Select(x => new WalletItemTransactionModel
+        {
+            TransactionId = x.TransactionId,
+            BudgetType = new BudgetTypeModel()
+            { 
+                Code = x.BudgetType, 
+                Description = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).Description,
+                IsAdd = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).IsAdd
+            },
+            BudgetSubType = new BudgetSubTypeModel()
+            { 
+                Code = x.BudgetSubType, 
+                Description = _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description,
+                Icon = _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Icon,
+            },
+            Amount = x.Amount,
+            Description = x.Description,
+            TransactionDate = x.TransactionDate,
+        }).ToList();
+
+        Top5WalletTransactionList = [.. WalletTransactionList.Take(5)];
 
         GetTotalAmountPerBudgetType();
 
         ChartFormatOptions = GetChartFormat();
         WalletChartData = GetChartData();
 
-        IsBusy = false;
+         IsBusy = false;
+
+       
         //return Task.CompletedTask;
     }
 
     [ObservableProperty]
-    private List<WalletTransactionsEntity> _budgetList;
+    private List<WalletItemTransactionModel> _top5WalletTransactionList;
+
+    [ObservableProperty]
+    private List<WalletItemTransactionModel> _walletTransactionList;
 
     [ObservableProperty]
     private string _totalAmountPerIncome;
@@ -59,21 +87,21 @@ public partial class HomePageViewModel : PageViewModelBase
 
     private void GetTotalAmountPerBudgetType()
     {
-        if (!BudgetList.Any())
+        if (!WalletTransactionList.Any())
         {
             return;
         }
 
-        var groupedItems = BudgetList
+        var groupedItems = WalletTransactionList
         .GroupBy(x => x.BudgetType)
         .Select(x => new 
         { 
             BudgetType = x.Key, 
-            TotalAmount = (float?)x.Sum(y => y.Amount)
+            TotalAmount = x.Sum(y => y.Amount)
         });
 
-        TotalAmountPerIncome = groupedItems.FirstOrDefault(_ => _.BudgetType == "01")?.TotalAmount.ToString();
-        TotalAmountPerExpense = groupedItems.FirstOrDefault(_ => _.BudgetType == "02")?.TotalAmount.ToString();
+        TotalAmountPerIncome = groupedItems.FirstOrDefault(_ => _.BudgetType.Code == "01")?.TotalAmount.ToString("C");
+        TotalAmountPerExpense = groupedItems.FirstOrDefault(_ => _.BudgetType.Code == "02")?.TotalAmount.ToString("C");
     }
 
     [ObservableProperty]
@@ -81,17 +109,17 @@ public partial class HomePageViewModel : PageViewModelBase
 
      private object GetChartData()
     {
-        if (!BudgetList.Any())
+        if (!WalletTransactionList.Any())
         {
             return new object();
         }
 
-        var groupedItems = BudgetList
-        .GroupBy(x => _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description)
+        var groupedItems = WalletTransactionList
+        .GroupBy(x => _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType.Code).Description)
         .Select(x => new
         { 
             Transaction = x.Key, 
-            Amount = (float?)x.Sum(y => y.Amount)
+            Amount = x.Sum(y => y.Amount)
         });
 
         var columnData = new List<object>()
@@ -117,7 +145,6 @@ public partial class HomePageViewModel : PageViewModelBase
     [ObservableProperty]
     private object _chartFormatOptions;
     
-
     private object GetChartFormat()
      => new
     {
@@ -128,6 +155,7 @@ public partial class HomePageViewModel : PageViewModelBase
             width = "90%",
             height = "70%"
         },
+        colors = new[] { "#87BB62", "#4394E5", "#B6A6E9", "#F8AE54", "#CA6C0F", "#003366", "#21134D" },
         legend = new
         {
             position = "right",
@@ -141,12 +169,23 @@ public partial class HomePageViewModel : PageViewModelBase
         },
         animation = new
         {
-            duration = 1000,
+            duration = 2000,
             easing = "out",
             startup = true
         },
         pieHole = 0.35,
     };
+
+    [RelayCommand]
+    private async Task ViewMore()
+    {
+        var navigationParams = new NavigationParameters
+        {
+            { NavigationParameterKeys.WalletTransactions, _walletTransactionList.ToList() }
+        };
+        await NavigationService.SelectTabAsync(ViewNames.TransactionPage, navigationParams);//, new Uri($"TabbedPage\\selectedTab={ViewNames.TransactionPage}"));
+
+    }
 
     //public Chart WalletChart => GetChart();
 
@@ -197,28 +236,4 @@ public partial class HomePageViewModel : PageViewModelBase
     //        _ => SKColor.Parse("#f14668"),
     //    };
     //}
-
-    //private List<BudgetItemAccountModel> GetBudgetList()
-    //{
-    //    _budgetItems.AddRange(new BudgetItemAccountModel[] {
-    //        new BudgetItemAccountModel{Id = 1, BudgetType = BudgetType.Income, BudgetSubType = BudgetSubType.Salary, Amount = 11500, Description = "Main Salary"},
-    //        new BudgetItemAccountModel{Id = 2, BudgetType = BudgetType.Income, BudgetSubType = BudgetSubType.Salary, Amount = 1500, Description = "Side Hustle Salary"},
-    //        new BudgetItemAccountModel{Id = 3, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Utilities, Amount = 200, Description = "Electric bill"},
-    //        new BudgetItemAccountModel{Id = 4, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Rent, Amount = 1200, Description = "Apartment rent"},
-    //        new BudgetItemAccountModel{Id = 5, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Food, Amount = 800, Description = "Groceries"},
-    //        new BudgetItemAccountModel{Id = 6, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Utilities, Amount = 400, Description = "Gas"},
-    //        new BudgetItemAccountModel{Id = 7, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Miscellaneous, Amount = 100, Description = "Donation"},
-    //    });
-
-    //    return _budgetItems;
-    //}
-
-    //[RelayCommand(AllowConcurrentExecutions = false)]
-    //private async Task TryMeTapped()
-    //{
-    //    CurrentMonthText = "Month";
-
-    //    SemanticScreenReader.Announce(CurrentMonthText);
-    //}
-
 }

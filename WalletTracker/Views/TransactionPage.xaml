@@ -4,13 +4,137 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:WalletTracker.ViewModels"
+    xmlns:models="clr-namespace:WalletTracker.Models"
+    xmlns:lang="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
     xmlns:views="clr-namespace:WalletTracker.Views"
+    xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker"
     BackgroundColor="{StaticResource Primary}"
-    NavigationPage.HasNavigationBar="False">
-    <VerticalStackLayout>
+    NavigationPage.HasNavigationBar="False"
+    x:DataType="viewModels:TransactionPageViewModel">
+    <StackLayout
+        Margin="16,24"
+        HorizontalOptions="Fill"
+        VerticalOptions="Fill">
         <Label
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+            FontSize="24"
+            Text="Transactions"
+            TextColor="Black"
+            VerticalOptions="Center"/>
+
+        <Grid Padding="16"
+                RowDefinitions="Auto,*,600"
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="4">
+            <!-- <Button Text="{x:Static lang:AppResources.Btn_New}" -->
+            <Button Text="New"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Command="{Binding AddTransactionCommand}"
+                    BackgroundColor="{x:StaticResource Secondary}"
+                    HorizontalOptions="End"
+                    TextColor="White"
+                    HeightRequest="40"
+                    WidthRequest="90"
+                    Margin="0,8">
+                    <Button.ImageSource>
+                        <FontImageSource FontFamily="FluentIcons"
+                        Glyph="&#x2b;"/>
+                    </Button.ImageSource>
+            </Button>
+            <ctrl:BorderedEntry 
+                    Placeholder="Search any keyword"
+                    PlaceholderColor="#88A9A9A9"
+                    PlaceholderFontFamily="RalewayRegular"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text=""
+                    CornerRadius="12"
+                    FontSize="18"
+                    BorderColor="#707070"/>
+                    <Button Text="Search" BackgroundColor="{x:StaticResource Secondary}" Grid.Row="1" Grid.Column="1"/>
+
+            <CollectionView
+                Margin="0,8"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                ItemsSource="{Binding WalletTransactionList}"
+                ItemsUpdatingScrollMode="KeepItemsInView">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="16" Orientation="Vertical" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.EmptyViewTemplate>
+                    <DataTemplate>
+                        <Label HorizontalOptions="Center" Text="No Available Transactions" />
+                    </DataTemplate>
+                </CollectionView.EmptyViewTemplate>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:WalletItemTransactionModel">
+                        <Grid RowSpacing="0">
+                            <Border
+                                Grid.Row="0"
+                                Background="{x:StaticResource Tertiary}"
+                                HeightRequest="100"
+                                Stroke="#ffffff"
+                                StrokeShape="RoundRectangle 25">
+                                <Border.Shadow>
+                                    <Shadow
+                                        Brush="#ffffff"
+                                        Opacity="0.35"
+                                        Offset="1,0" />
+                                </Border.Shadow>
+                                <Grid
+                                    Padding="8"
+                                    ColumnDefinitions="Auto, 180, *"
+                                    ColumnSpacing="8">
+                                    <Border
+                                        Grid.Column="0"
+                                        BackgroundColor="{Binding BudgetType.BudgetColor}"
+                                        HeightRequest="55"
+                                        WidthRequest="55">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="50" />
+                                        </Border.StrokeShape>
+                                        <Border.Shadow>
+                                            <Shadow
+                                                Brush="{Binding BudgetType.BudgetColor}"
+                                                Opacity="0.8"
+                                                Offset="1,1" />
+                                        </Border.Shadow>
+    
+                                        <Image
+                                            HeightRequest="30"
+                                            Source="{Binding BudgetSubType.Icon}"
+                                            WidthRequest="30" />
+                                    </Border>
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        VerticalOptions="Center"
+                                        Margin="8,0,0,0">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="Medium"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="1"
+                                            Text="{Binding Description}" />
+                                        <Label FontSize="Small" Text="{Binding TransactionDate, StringFormat='{0:MMMM dd, yyyy}'}" />
+                                    </VerticalStackLayout>
+                                    <Label
+                                        Grid.Column="2"
+                                        Margin="8"
+                                        FontAttributes="Bold"
+                                        FontSize="Medium"
+                                        HorizontalOptions="End"
+                                        Text="{Binding Amount, StringFormat='{0:C2}'}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+    </StackLayout>
 </ContentPage>

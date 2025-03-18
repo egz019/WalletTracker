@@ -14,6 +14,8 @@ public class BudgetSubTypeDto : DataObjectBase, IBudgetSubTypeDto
 
     public string BudgetType { get; set; }
 
+    public string Icon {get; set;}
+
     public DateTime Created { get; set; }
 
     public DateTime Modified { get; set; }
