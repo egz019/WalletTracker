@@ -28,8 +28,6 @@ public partial class HomePageViewModel : PageViewModelBase
 
         CurrentMonthText = DateTime.Now.ToString("MMMM").ToUpper() + " " + DateTime.Now.Year;
 
-        IsBusy = true;
-        
         _budgetTypes = await _preDataManager.GetBudgetTypeList();
         _budgetSubTypes =  await _preDataManager.GetBudgetSubTypeList();
 
@@ -81,9 +79,6 @@ public partial class HomePageViewModel : PageViewModelBase
 
     [ObservableProperty]
     private string _currentMonthText;
-
-    [ObservableProperty]
-    private bool _isBusy = false;
 
     private void GetTotalAmountPerBudgetType()
     {
@@ -222,6 +217,74 @@ public partial class HomePageViewModel : PageViewModelBase
     //    };
     //}
 
+
+
+    //public object WalletChartData => GetChartData();
+
+    //private object GetChartData()
+    //{
+    //    //if (BudgetList.Count <= 0)
+    //    //{
+    //    //    return new object;
+    //    //}
+
+    //    var groupedItems = BudgetList
+    //            .GroupBy(x => _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description)
+    //            .Select(x => new
+    //            {
+    //                Transaction = x.Key,
+    //                Amount = (float?)x.Sum(y => y.Amount)
+    //            });
+
+    //    var columnData = new List<object>()
+    //        {
+    //            new { id = "", label = "Budget Sub Type", pattern = "", type = "string" },
+    //            new { id = "", label = "Total Amount", pattern = "", type = "number" }
+    //        };
+
+    //    var rowsData = new List<object>();
+
+    //    foreach (var item in groupedItems)
+    //    {
+    //        rowsData.Add(new { c = new List<object> { new { v = item.Transaction }, new { v = item.Amount } } });
+    //    }
+
+    //    return new
+    //    {
+    //        cols = columnData,
+    //        rows = rowsData
+    //    };
+    //}
+
+    //public static object ChartFormatOptions => new
+    //{
+    //    fontSize = 10,
+    //    fontName = "Raleway-Regular",
+    //    chartArea = new
+    //    {
+    //        width = "90%",
+    //        height = "70%"
+    //    },
+    //    legend = new
+    //    {
+    //        position = "right",
+    //        textStyle = new { fontSize = 10 },
+
+    //    },
+    //    tooltip = new
+    //    {
+    //        isHtml = true,
+    //        showColorCode = true
+    //    },
+    //    animation = new
+    //    {
+    //        duration = 1000,
+    //        easing = "out",
+    //        startup = true
+    //    },
+    //    pieHole = 0.35,
+    //};
+
     //private SKColor GetBudgetSubTypeLegendColor(string budgetSubType)
     //{
     //    return budgetSubType switch
@@ -236,4 +299,33 @@ public partial class HomePageViewModel : PageViewModelBase
     //        _ => SKColor.Parse("#f14668"),
     //    };
     //}
+
+
+
+    //private List<BudgetItemAccountModel> GetBudgetList()
+    //{
+    //    _budgetItems.AddRange(new BudgetItemAccountModel[] {
+    //        new BudgetItemAccountModel{Id = 1, BudgetType = BudgetType.Income, BudgetSubType = BudgetSubType.Salary, Amount = 11500, Description = "Main Salary"},
+    //        new BudgetItemAccountModel{Id = 2, BudgetType = BudgetType.Income, BudgetSubType = BudgetSubType.Salary, Amount = 1500, Description = "Side Hustle Salary"},
+    //        new BudgetItemAccountModel{Id = 3, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Utilities, Amount = 200, Description = "Electric bill"},
+    //        new BudgetItemAccountModel{Id = 4, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Rent, Amount = 1200, Description = "Apartment rent"},
+    //        new BudgetItemAccountModel{Id = 5, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Food, Amount = 800, Description = "Groceries"},
+    //        new BudgetItemAccountModel{Id = 6, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Utilities, Amount = 400, Description = "Gas"},
+    //        new BudgetItemAccountModel{Id = 7, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Miscellaneous, Amount = 100, Description = "Donation"},
+    //    });
+
+    //    return _budgetItems;
+    //}
+
+   
+   
+
+    //[RelayCommand(AllowConcurrentExecutions = false)]
+    //private async Task TryMeTapped()
+    //{
+    //    CurrentMonthText = "Month";
+
+    //    SemanticScreenReader.Announce(CurrentMonthText);
+    //}
+
 }
