@@ -15,6 +15,8 @@ public class WalletTransactionsManager : ManagerBase, IWalletTransactionsManager
         _walletTransactionsRepository = walletTransactionsRepository;
     }
 
+    public EventHandler WalletTransactionListChanged {get; set;}
+
     public async Task<WalletTransactionsEntity> GetWalletTransactionAsync(string transactionId)
     {
         var transactions = await _walletTransactionsRepository.GetWalletTransactionAsync(transactionId);
@@ -35,12 +37,15 @@ public class WalletTransactionsManager : ManagerBase, IWalletTransactionsManager
 
     public async Task<bool> SaveWalletTransactionAsync(WalletTransactionsEntity walletTransaction)
     {
-        return Convert.ToBoolean(await _walletTransactionsRepository.SaveWalletTransactionAsync(ManagerToolkit.Map<WalletTransactionsDto>(walletTransaction)));
+        var result = Convert.ToBoolean(await _walletTransactionsRepository.SaveWalletTransactionAsync(ManagerToolkit.Map<WalletTransactionsDto>(walletTransaction)));
+        WalletTransactionListChanged?.Invoke(this, EventArgs.Empty);
+        return result;
     }
 
     public void SaveWalletTransactions(List<WalletTransactionsEntity> walletTransactions)
     {
         _walletTransactionsRepository.SaveWalletTransactions(ManagerToolkit.Map<List<WalletTransactionsDto>>(walletTransactions));
+        WalletTransactionListChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public async Task<bool> DeleteWalletTransactionAsync(string transactionId)

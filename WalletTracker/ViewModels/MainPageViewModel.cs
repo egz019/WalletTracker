@@ -1,6 +1,4 @@
-﻿using WalletTracker.Services;
-
-namespace WalletTracker.ViewModels;
+﻿namespace WalletTracker.ViewModels;
 
 public class MainPageViewModel : PageViewModelBase
 {

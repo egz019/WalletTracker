@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Microcharts.Maui;
 using WalletTracker.Controls;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
+
 
 #if __ANDROID__
 using Microsoft.Maui.Controls.Compatibility.Platform.Android;
@@ -23,6 +25,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCompatibility()
             .UsePrism(PrismStartup.Configure)
             .UseMauiCommunityToolkit()
             .UseMicrocharts()

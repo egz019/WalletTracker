@@ -18,3 +18,5 @@ global using WalletTracker.Repositories.Interfaces;
 global using WalletTracker.Services;
 global using WalletTracker.ViewModels;
 global using WalletTracker.Views;
+global using WalletTracker.Common;
+global using WalletTracker.Entities;

@@ -77,34 +77,34 @@
                         Options = "{Binding ChartFormatOptions}"
                         HeightRequest="180"
                         WidthRequest="300"/>
-                    <Grid RowDefinitions="*,*" ColumnDefinitions="Auto,*">
-                    <Label
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        FontAttributes="Bold"
-                        FontSize="Body"
-                        Text="Total Income:" />
-                    <Label 
-                        Margin="8,0"
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        FontAttributes="Bold"
-                        FontSize="Body"
-                        Text="{Binding TotalAmountPerIncome, StringFormat='{0:C2}'}" />
-                    <Label
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        FontAttributes="Bold"
-                        FontSize="Body"
-                        Text="Total Expense:" />
-                    <Label Margin="8,0"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        FontAttributes="Bold"
-                        FontSize="Body"
-                        Text="{Binding TotalAmountPerExpense, StringFormat='{0:C2}'}" />
+                    <Grid RowDefinitions="*,*" ColumnDefinitions="Auto,*,*">
+                        <Label
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            FontSize="Body"
+                            Text="Total Income:" />
+                        <Label 
+                            Margin="8,0"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontSize="Body"
+                            Text="{Binding TotalAmountPerIncome, StringFormat='{0:C2}'}" />
+                        <Label
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            FontAttributes="Bold"
+                            FontSize="Body"
+                            Text="Total Expense:" />
+                        <Label Margin="8,0"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            FontSize="Body"
+                            Text="{Binding TotalAmountPerExpense, StringFormat='{0:C2}'}" />
+                        <!-- <Button HeightRequest="25" BackgroundColor="Green" Text="More Reports" FontSize="8" Grid.Column = "2" Grid.RowSpan="2"/> -->
                     </Grid>
-                    
                 </StackLayout>
             </StackLayout>
         </Border>

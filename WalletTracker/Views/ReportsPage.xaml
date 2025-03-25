@@ -4,8 +4,13 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:charts="clr-namespace:MAUI.GoogleChartsView;assembly=MAUI.GoogleChartsView"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     BackgroundColor="{StaticResource Primary}"
     NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Behaviors> 
+         <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
+    </ContentPage.Behaviors>
     <StackLayout
         Margin="16"
         HorizontalOptions="Fill"

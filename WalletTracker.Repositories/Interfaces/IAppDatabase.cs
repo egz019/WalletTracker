@@ -2,4 +2,5 @@
 
 public interface IAppDatabase : IMobileDatabase
 {
+    Task InitializeTables();
 }

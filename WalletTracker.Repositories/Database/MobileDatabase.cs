@@ -10,8 +10,8 @@ public class MobileDatabase : IMobileDatabase
     {
         _databaseName = databaseName;
         var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), _databaseName);
-        _dbAsyncConnection = new SQLiteAsyncConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
-        _dbConnection = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache);
+        _dbAsyncConnection = new SQLiteAsyncConnection(dbPath, SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.SharedCache);
+        _dbConnection = new SQLiteConnection(dbPath, SQLiteOpenFlags.Create| SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.SharedCache);
     }
 
     public Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> expression) where T : class, IDataObjectBase, new()
@@ -22,6 +22,12 @@ public class MobileDatabase : IMobileDatabase
    
     public Task<List<T>> ToListAsync<T>(Expression<Func<T, bool>> expression) where T : class, IDataObjectBase, new()
         => _dbAsyncConnection.Table<T>().Where(expression).ToListAsync();
+
+    public List<T> ToList<T>() where T : class, IDataObjectBase, new()
+        => [.. _dbConnection.Table<T>()];
+
+    public List<T> ToList<T>(Expression<Func<T, bool>> expression) where T : class, IDataObjectBase, new()
+        => [.. _dbConnection.Table<T>().Where(expression)];
 
     public int Insert<T>(T item) where T : class, IDataObjectBase, new()
     {

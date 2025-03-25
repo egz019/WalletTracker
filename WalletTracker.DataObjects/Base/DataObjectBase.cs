@@ -1,6 +1,4 @@
-﻿using WalletTracker.DataObjects.Interfaces;
-
-namespace WalletTracker.DataObjects.Base;
+﻿namespace WalletTracker.DataObjects.Base;
 
 public class DataObjectBase : IDataObjectBase
 {

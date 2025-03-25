@@ -20,6 +20,11 @@ public class BudgetSubTypeRepository : RepositoryBase, IBudgetSubTypeRepository
         return budgetTypes;
     }
 
+    public List<BudgetSubTypeDto> GetBudgetSubTypesList()
+    {
+        return DB.ToList<BudgetSubTypeDto>();
+    }
+
     public void SaveBudgetSubTypes(List<BudgetSubTypeDto> budgetSubTypes)
     {
         DB.InsertAll(budgetSubTypes);

@@ -1,7 +1,7 @@
 ﻿
 using System.Windows.Input;
 using WalletTracker.Common;
-using WalletTracker.Entities;
+
 using WalletTracker.Managers;
 
 namespace WalletTracker.ViewModels;
@@ -20,6 +20,11 @@ public partial class HomePageViewModel : PageViewModelBase
     {
         _walletTransactionManager = walletTransactionManager;
         _preDataManager = preDataManager;
+
+        _walletTransactionManager.WalletTransactionListChanged += async (s,e) =>
+        {
+            await RefreshWalletTransactions();
+        };
     }
 
     protected override async Task InitializeAsync(INavigationParameters parameters)
@@ -28,11 +33,11 @@ public partial class HomePageViewModel : PageViewModelBase
 
         CurrentMonthText = DateTime.Now.ToString("MMMM").ToUpper() + " " + DateTime.Now.Year;
 
-        _budgetTypes = await _preDataManager.GetBudgetTypeList();
-        _budgetSubTypes =  await _preDataManager.GetBudgetSubTypeList();
+        _budgetTypes = _preDataManager.BudgetTypes.ToList();
+        _budgetSubTypes =  _preDataManager.BudgetSubTypes.ToList();
 
         _transactions = await _walletTransactionManager.GetListOfWalletTransactionsAsync();
-        WalletTransactionList = _transactions.Select(x => new WalletItemTransactionModel
+        WalletTransactionList = [.. _transactions.Select(x => new WalletItemTransactionModel
         {
             TransactionId = x.TransactionId,
             BudgetType = new BudgetTypeModel()
@@ -50,7 +55,7 @@ public partial class HomePageViewModel : PageViewModelBase
             Amount = x.Amount,
             Description = x.Description,
             TransactionDate = x.TransactionDate,
-        }).ToList();
+        })];
 
         Top5WalletTransactionList = [.. WalletTransactionList.Take(5)];
 
@@ -60,9 +65,6 @@ public partial class HomePageViewModel : PageViewModelBase
         WalletChartData = GetChartData();
 
          IsBusy = false;
-
-       
-        //return Task.CompletedTask;
     }
 
     [ObservableProperty]
@@ -80,6 +82,34 @@ public partial class HomePageViewModel : PageViewModelBase
     [ObservableProperty]
     private string _currentMonthText;
 
+    private async Task RefreshWalletTransactions()
+    {
+        _transactions = await _walletTransactionManager.GetListOfWalletTransactionsAsync();
+        WalletTransactionList = [.. _transactions.Select(x => new WalletItemTransactionModel
+        {
+            TransactionId = x.TransactionId,
+            BudgetType = new BudgetTypeModel()
+            { 
+                Code = x.BudgetType, 
+                Description = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).Description,
+                IsAdd = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).IsAdd
+            },
+            BudgetSubType = new BudgetSubTypeModel()
+            { 
+                Code = x.BudgetSubType, 
+                Description = _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description,
+                Icon = _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Icon,
+            },
+            Amount = x.Amount,
+            Description = x.Description,
+            TransactionDate = x.TransactionDate,
+        })];
+
+        GetTotalAmountPerBudgetType();
+
+        WalletChartData = GetChartData();
+    }
+
     private void GetTotalAmountPerBudgetType()
     {
         if (!WalletTransactionList.Any())
@@ -88,15 +118,15 @@ public partial class HomePageViewModel : PageViewModelBase
         }
 
         var groupedItems = WalletTransactionList
-        .GroupBy(x => x.BudgetType)
+        .GroupBy(x => x.BudgetType.Code)
         .Select(x => new 
         { 
             BudgetType = x.Key, 
             TotalAmount = x.Sum(y => y.Amount)
         });
 
-        TotalAmountPerIncome = groupedItems.FirstOrDefault(_ => _.BudgetType.Code == "01")?.TotalAmount.ToString("C");
-        TotalAmountPerExpense = groupedItems.FirstOrDefault(_ => _.BudgetType.Code == "02")?.TotalAmount.ToString("C");
+        TotalAmountPerIncome = groupedItems.FirstOrDefault(_ => _.BudgetType == "01")?.TotalAmount.ToString("C");
+        TotalAmountPerExpense = groupedItems.FirstOrDefault(_ => _.BudgetType == "02")?.TotalAmount.ToString("C");
     }
 
     [ObservableProperty]

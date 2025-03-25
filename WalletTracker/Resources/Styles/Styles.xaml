@@ -1,6 +1,30 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
-<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker">
+    <Style TargetType="ctrl:BorderedEntry">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="#707070"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="FontFamily" Value="RalewayRegular" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="PlaceholderColor" Value="#88A9A9A9" />
+        <Setter Property="PlaceholderFontFamily" Value="RalewayRegular"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
 
     <Style TargetType="Label">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />

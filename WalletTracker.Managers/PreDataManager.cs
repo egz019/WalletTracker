@@ -1,5 +1,4 @@
 ﻿using WalletTracker.DataObjects;
-using WalletTracker.Repositories.Interfaces;
 
 namespace WalletTracker.Managers;
 
@@ -7,6 +6,10 @@ public class PreDataManager : ManagerBase, IPreDataManager
 {
     private readonly IBudgetSubTypeRepository _budgetSubTypeRepository;
     private readonly IBudgetTypeRepository _budgetTypesRepository;
+
+    public IList<BudgetTypeEntity> BudgetTypes { get; set; }
+    public IList<BudgetSubTypeEntity> BudgetSubTypes { get; set; }
+
     public PreDataManager(
         IManagerToolkit managerToolkit,
         IBudgetTypeRepository budgetTypesRepository,
@@ -14,6 +17,9 @@ public class PreDataManager : ManagerBase, IPreDataManager
     {
         _budgetSubTypeRepository = budgetSubTypeRepository;
         _budgetTypesRepository = budgetTypesRepository;
+        
+        BudgetTypes = new List<BudgetTypeEntity>();
+        BudgetSubTypes = new List<BudgetSubTypeEntity>();
     }
 
     public void PreloadData()
@@ -22,7 +28,36 @@ public class PreDataManager : ManagerBase, IPreDataManager
         PreloadBudgetSubTypes();
     }
 
-    public async Task<List<BudgetTypeEntity>> GetBudgetTypeList()
+    public void InitializeData()
+    {
+        BudgetTypes = GetBudgetTypeList();
+        BudgetSubTypes = GetBudgetSubTypeList();
+    }
+
+    public List<BudgetTypeEntity> GetBudgetTypeList()
+    {
+       var budgetTypes = _budgetTypesRepository.GetBudgetTypesList();
+
+        if (budgetTypes.Any())
+        {
+            return ManagerToolkit.Map<List<BudgetTypeEntity>>(budgetTypes);
+        }
+
+        return new List<BudgetTypeEntity>();
+    }
+
+	public List<BudgetSubTypeEntity> GetBudgetSubTypeList()
+	{
+		var subTypes = _budgetSubTypeRepository.GetBudgetSubTypesList();
+
+        if (subTypes.Any())
+        {
+            return ManagerToolkit.Map<List<BudgetSubTypeEntity>>(subTypes);
+        }
+        return new List<BudgetSubTypeEntity>();
+    }
+
+    public async Task<List<BudgetTypeEntity>> GetBudgetTypeListAsync()
     {
        var budgetTypes = await _budgetTypesRepository.GetBudgetTypesListAsync();
 
@@ -34,7 +69,7 @@ public class PreDataManager : ManagerBase, IPreDataManager
         return new List<BudgetTypeEntity>();
     }
 
-	public async Task<List<BudgetSubTypeEntity>> GetBudgetSubTypeList()
+	public async Task<List<BudgetSubTypeEntity>> GetBudgetSubTypeListAsync()
 	{
 		var subTypes = await _budgetSubTypeRepository.GetBudgetSubTypesListAsync();
 

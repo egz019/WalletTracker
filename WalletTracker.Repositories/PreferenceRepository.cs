@@ -6,19 +6,19 @@ public class PreferenceRepository : RepositoryBase, IPreferenceRespository
     {
     }
 
-    public string Get(string keyName, string sharedName = null)
+    public string Get(string keyName, string? sharedName = null)
     {
         var item = DB.FirstOrDefault<PreferenceDto>(x => x.KeyName == keyName && sharedName == null);
-        return item != null ? item.Value : null;
+        return item?.Value ?? string.Empty;
     }
 
-    public async Task<string> GetAsync(string keyName, string sharedName = null)
+    public async Task<string> GetAsync(string keyName, string? sharedName = null)
     {
         var item = await DB.FirstOrDefaultAsync<PreferenceDto>(x => x.KeyName == keyName && sharedName == null);
-        return item != null ? item.Value : null;
+        return item?.Value ?? string.Empty;
     }
 
-    public async Task SetAsync(string keyName, string value, string sharedName = null)
+    public async Task SetAsync(string keyName, string value, string? sharedName = null)
     {
         var item = await DB.FirstOrDefaultAsync<PreferenceDto>(x => x.KeyName == keyName && sharedName == null);
 
@@ -27,7 +27,7 @@ public class PreferenceRepository : RepositoryBase, IPreferenceRespository
             item = new PreferenceDto()
             {
                 KeyName = keyName,
-                SharedName = sharedName
+                SharedName = sharedName ?? string.Empty,
             };
         }
 
@@ -35,7 +35,7 @@ public class PreferenceRepository : RepositoryBase, IPreferenceRespository
         await DB.InsertOrUpdateAsync(item);
     }
 
-    public void Set(string keyName, string value, string sharedName = null)
+    public void Set(string keyName, string value, string? sharedName = null)
     {
         var item = DB.FirstOrDefault<PreferenceDto>(x => x.KeyName == keyName && sharedName == null);
 
@@ -44,7 +44,7 @@ public class PreferenceRepository : RepositoryBase, IPreferenceRespository
             item = new PreferenceDto()
             {
                 KeyName = keyName,
-                SharedName = sharedName
+                SharedName = sharedName ?? string.Empty
             };
         }
 
@@ -52,7 +52,7 @@ public class PreferenceRepository : RepositoryBase, IPreferenceRespository
         DB.InsertOrUpdate(item);
     }
 
-    public async Task ClearAsync(string sharedName = null)
+    public async Task ClearAsync(string? sharedName = null)
     {
         if (string.IsNullOrEmpty(sharedName))
         {

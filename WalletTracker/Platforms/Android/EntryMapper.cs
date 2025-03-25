@@ -42,7 +42,7 @@ public static class EntryMapper
             // });
 
             nativeEntry.PlatformView.SetTextSize(ComplexUnitType.Sp, (float)entry.FontSize);
-            nativeEntry.PlatformView.Typeface = (Typeface)entry.FontFamily;
+            //nativeEntry.PlatformView.Typeface = (Typeface)entry.FontFamily;
             // nativeEntry.PlatformView.SetTextColor(entry.TextColor.ToAndroid());
             // nativeEntry.PlatformView.SetHintTextColor(entry.PlaceholderColor.ToAndroid());
             nativeEntry.PlatformView.UpdatePlaceholder(entry);

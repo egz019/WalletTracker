@@ -15,6 +15,12 @@ public class BudgetTypeRepository : RepositoryBase, IBudgetTypeRepository
     {
         return await DB.ToListAsync<BudgetTypesDto>();
     }
+
+    public  List<BudgetTypesDto> GetBudgetTypesList()
+    {
+        return DB.ToList<BudgetTypesDto>();
+    }
+
     //public async Task SaveBudgetTypes(List<BudgetTypesDto> budgetTypes)
     //{
     //    await DB.InsertAllAsync(budgetTypes);

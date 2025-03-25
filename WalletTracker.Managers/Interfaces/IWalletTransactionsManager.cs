@@ -2,6 +2,7 @@
 
 public interface IWalletTransactionsManager : IManager
 {
+    EventHandler WalletTransactionListChanged {get; set;}
     Task<bool> DeleteWalletTransactionAsync(string transactionId);
     Task<List<WalletTransactionsEntity>> GetListOfWalletTransactionsAsync();
     Task<WalletTransactionsEntity> GetWalletTransactionAsync(string transactionId);

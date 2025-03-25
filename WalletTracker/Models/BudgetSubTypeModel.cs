@@ -4,6 +4,7 @@ public class BudgetSubTypeModel
 {
     public string Code { get; set; }
     public string Description { get; set; }
+    public string BudgetType {get; set; }
     public string Icon { get; set; }
 
     // public BudgetSubTypeModel(BudgetSubType budgetSubType)

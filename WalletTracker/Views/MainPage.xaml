@@ -4,13 +4,18 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModels="clr-namespace:WalletTracker.ViewModels;assembly=WalletTracker"
     xmlns:views="clr-namespace:WalletTracker.Views"
     android:TabbedPage.ToolbarPlacement="Bottom"
     x:DataType="viewModels:MainPageViewModel"
-    BarBackgroundColor="{StaticResource Primary}"
+    BarBackgroundColor="White"
     SelectedTabColor="#28282B"
     UnselectedTabColor="#c5c5c5">
+
+    <TabbedPage.Behaviors> 
+         <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
+    </TabbedPage.Behaviors>
 
     <views:HomePage Title="" IconImageSource="ic_home" />
     <views:TransactionPage Title="" IconImageSource="ic_transactions" />

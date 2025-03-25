@@ -19,19 +19,21 @@ internal static class PrismStartup
 
     private async static Task InitAsync(IContainerProvider containerProvider, INavigationService navigationService)
     {
+        // var appDb = containerProvider.Resolve<IAppDatabase>();
+        // await appDb.InitializeTables();
+        //await System.Threading.Tasks.Task.Delay(10000);
         //Pre-loaded data here
         var appContentManager = containerProvider.Resolve<IAppContentManager>();
         appContentManager.PreloadAppData();
 
         await navigationService.NavigateAsync($"{nameof(NavigationPage)}/{nameof(MainPage)}");
     }
-
+    
     private static void RegisterModules(IContainerRegistry containerRegistry)
     {
+        containerRegistry.RegisterRepositories();
         containerRegistry.RegisterManagers();
         containerRegistry.RegisterViews();
-        containerRegistry.RegisterRepositories();
-        
         containerRegistry.RegisterServices();
     }
 
@@ -40,6 +42,7 @@ internal static class PrismStartup
         containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
         containerRegistry.RegisterForNavigation<HomePage, HomePageViewModel>();
         containerRegistry.RegisterForNavigation<TransactionPage, TransactionPageViewModel>();
+        containerRegistry.RegisterForNavigation<AddNewTransactionPage, AddNewTransactionPageViewModel>();
         containerRegistry.RegisterForNavigation<ReportsPage>();
     }
 
