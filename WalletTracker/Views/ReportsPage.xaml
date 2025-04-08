@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:charts="clr-namespace:MAUI.GoogleChartsView;assembly=MAUI.GoogleChartsView"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:lang="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
     BackgroundColor="{StaticResource Primary}"
     NavigationPage.HasNavigationBar="False">
 
@@ -15,7 +16,7 @@
         Margin="16"
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
-        <Label FontSize="24" Text="Statistics" />
+        <Label FontSize="24" Text="{x:Static lang:AppResources.Lbl_Statistics}" />
         <charts:GoogleChartsView
             x:Name="MyGoogleChartLine"
             HeightRequest="200"

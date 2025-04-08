@@ -118,12 +118,14 @@
                 FontFamily="RalewayBold"
                 FontSize="24"
                 Text="Wallet Activities" />
-    <!--  Show ONLY TOP 3 or 5 RECORDS  -->
+                
+            <!--  Show ONLY TOP 3 or 5 RECORDS  -->
             <CollectionView
                 Margin="0,8,0,8"
-                HeightRequest="300"
+                HeightRequest="350"
                 ItemsSource="{Binding Top5WalletTransactionList}"
                 ItemsUpdatingScrollMode="KeepItemsInView"
+                x:Name="WalletCollectionView"
                 >
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="16" Orientation="Vertical" />
@@ -201,12 +203,11 @@
                 </CollectionView.ItemTemplate>
             <CollectionView.FooterTemplate>
                 <DataTemplate x:DataType="viewModels:HomePageViewModel">
-                    <Button Text="View More" Command="{Binding ViewMoreCommand}" BackgroundColor="{x:StaticResource Secondary}"/>
+                    <Button Text="View More" Command="{Binding Source={x:Reference WalletCollectionView}, Path=BindingContext.ViewMoreCommand}" BackgroundColor="{x:StaticResource Secondary}"/>
                 </DataTemplate>
             </CollectionView.FooterTemplate>
             </CollectionView>
-            <Button Text="View More" Grid.Row="2" Command="{Binding ViewMoreCommand}" BackgroundColor="{x:StaticResource Secondary}"/>
-        </StackLayout>
+         </StackLayout>
     </Grid>
 
 </ContentPage>
