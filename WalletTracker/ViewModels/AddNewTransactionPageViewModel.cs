@@ -1,3 +1,7 @@
+
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+
 namespace WalletTracker.ViewModels;
 
 public partial class AddNewTransactionPageViewModel : PageViewModelBase
@@ -8,11 +12,11 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
     private List<BudgetSubTypeModel> _budgetSubTypeList;
 
     public AddNewTransactionPageViewModel(
-        BaseServices baseServices, 
-        IWalletTransactionsManager walletTransactionsManager, 
-        IPreDataManager preDataManager) 
+        BaseServices baseServices,
+        IWalletTransactionsManager walletTransactionsManager,
+        IPreDataManager preDataManager)
     : base(baseServices)
-	{
+    {
         _walletTransactionsManager = walletTransactionsManager;
         _preDataManager = preDataManager;
     }
@@ -29,32 +33,42 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
         })];
 
         var budgetSubTypeList = _preDataManager.BudgetSubTypes;
-        BudgetSubTypes = [.. budgetSubTypeList.Select(_ => new BudgetSubTypeModel
+        // BudgetSubTypes = [.. budgetSubTypeList.Select(_ => new BudgetSubTypeModel
+        // {
+        //     Code = _.Code,
+        //     Description = _.Description,
+        //     BudgetType = _.BudgetType
+        // })];
+        _budgetSubTypeList = [.. budgetSubTypeList.Select(_ => new BudgetSubTypeModel
         {
             Code = _.Code,
             Description = _.Description,
             BudgetType = _.BudgetType
         })];
-        _budgetSubTypeList = BudgetSubTypes;
+        //BudgetSubTypes;
 
         SelectedTransactionDate = DateTime.Now;
     }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(BudgetSubTypes))]
-    //[NotifyPropertyChangedFor(nameof(BudgetSubTypes))]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private BudgetTypeModel _selectedBudgetType;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private BudgetSubTypeModel _selectedBudgetSubType;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private string _description;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private decimal _transactionAmount;
 
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     private DateTime _selectedTransactionDate;
 
     [ObservableProperty]
@@ -63,28 +77,32 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
     [ObservableProperty]
     private List<BudgetSubTypeModel> _budgetSubTypes;
 
-    /// <summary>
-    /// Handles changes to the selected budget type and updates the budget subtypes accordingly.
-    /// </summary>
-    // partial void OnSelectedBudgetTypeChanged(BudgetTypeModel value)
-    // {
-    //     if (SelectedBudgetType != null)
-    //     {
-    //         BudgetSubTypes = _preDataManager.GetBudgetSubTypeList()
-    //             .Result
-    //             .Where(subType => subType.BudgetType == SelectedBudgetType.Code)
-    //             .Select(subType => new BudgetSubTypeModel
-    //             {
-    //                 Code = subType.Code,
-    //                 Description = subType.Description
-    //             })
-    //             .ToList();
-    //     }
-    //     else
-    //     {
-    //         BudgetSubTypes = new List<BudgetSubTypeModel>();
-    //     }
-    // }
+    // / <summary>
+    // / Handles changes to the selected budget type and updates the budget subtypes accordingly.
+    // / </summary>
+    partial void OnSelectedBudgetTypeChanged(BudgetTypeModel value)
+    {
+        if (_budgetSubTypeList == null)
+        {
+            return;
+        }
+
+        if (SelectedBudgetType != null)
+        {
+            BudgetSubTypes = _budgetSubTypeList
+                .Where(subType => subType.BudgetType == SelectedBudgetType.Code)
+                .Select(subType => new BudgetSubTypeModel
+                {
+                    Code = subType.Code,
+                    Description = subType.Description
+                })
+                .ToList();
+        }
+        else
+        {
+            BudgetSubTypes = new List<BudgetSubTypeModel>();
+        }
+    }
 
     partial void OnSelectedBudgetTypeChanged(BudgetTypeModel oldValue, BudgetTypeModel newValue)
     {
@@ -98,36 +116,48 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
     }
 
     [RelayCommand]
-    public async Task CloseWindow()
+    private async Task CloseWindow()
     {
         await NavigationService.GoBackAsync();
     }
 
-    [RelayCommand]
-    public async Task Save()
+    [RelayCommand(CanExecute = nameof(CanSave))]
+    private async Task Save()
     {
-        try 
-        {
-            var isSuccess = await _walletTransactionsManager.SaveWalletTransactionAsync(new WalletTransactionsEntity
+        await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                TransactionId = Guid.NewGuid().ToString(),
-                BudgetType = SelectedBudgetType.Code,
-                BudgetSubType = SelectedBudgetSubType.Code,
-                Amount = TransactionAmount,
-                Description = Description,
-                TransactionDate = SelectedTransactionDate
-            });
+                try
+                {
+                    var isSuccess = await _walletTransactionsManager.SaveWalletTransactionAsync(new WalletTransactionsEntity
+                    {
+                        TransactionId = Guid.NewGuid().ToString(),
+                        BudgetType = SelectedBudgetType.Code,
+                        BudgetSubType = SelectedBudgetSubType.Code,
+                        Amount = TransactionAmount,
+                        Description = Description,
+                        TransactionDate = SelectedTransactionDate
+                    });
 
-            if(isSuccess)
-            {
-                await CloseWindow();
-            }
-        }
-        catch(Exception ex)
-        {
-            Debug.WriteLine(ex.ToString());
-        }
+                    if (isSuccess)
+                    {
+                        var toast = Toast.Make("Transaction saved.", ToastDuration.Short);
+                        await toast.Show();
+
+                        await CloseWindow();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                }
+            });
     }
+
+    private bool CanSave() => !string.IsNullOrEmpty(SelectedBudgetType?.Code) &&
+              !string.IsNullOrEmpty(SelectedBudgetSubType?.Code) &&
+              !string.IsNullOrEmpty(Description) &&
+              (TransactionAmount > 0 || !string.IsNullOrEmpty(TransactionAmount.ToString()));
 
     [RelayCommand]
     public async Task Cancel()

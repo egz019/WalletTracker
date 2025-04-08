@@ -3,18 +3,18 @@
     x:Class="WalletTracker.Views.TransactionPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewModels="clr-namespace:WalletTracker.ViewModels"
-    xmlns:models="clr-namespace:WalletTracker.Models"
-    xmlns:lang="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
-    xmlns:views="clr-namespace:WalletTracker.Views"
     xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker"
+    xmlns:lang="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:models="clr-namespace:WalletTracker.Models"
+    xmlns:viewModels="clr-namespace:WalletTracker.ViewModels"
+    xmlns:views="clr-namespace:WalletTracker.Views"
+    x:DataType="viewModels:TransactionPageViewModel"
     BackgroundColor="{StaticResource Primary}"
-    NavigationPage.HasNavigationBar="False"
-    x:DataType="viewModels:TransactionPageViewModel">
+    NavigationPage.HasNavigationBar="False">
 
-     <ContentPage.Behaviors> 
-         <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
+    <ContentPage.Behaviors>
+        <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
     </ContentPage.Behaviors>
 
     <StackLayout
@@ -23,48 +23,54 @@
         VerticalOptions="Fill">
         <Label
             FontSize="24"
-            Text="Transactions"
+            Text="{x:Static lang:AppResources.Lbl_WalletTransactions}"
             TextColor="Black"
-            VerticalOptions="Center"/>
+            VerticalOptions="Center" />
 
-        <Grid Padding="16"
-                RowDefinitions="Auto,*,600"
-                ColumnDefinitions="*,Auto"
-                ColumnSpacing="4">
+        <Grid
+            Padding="16"
+            ColumnDefinitions="*,Auto"
+            ColumnSpacing="4"
+            RowDefinitions="Auto,*,600">
 
-            <Button Text="New"
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Command="{Binding AddNewTransactionCommand}"
-                    BackgroundColor="{x:StaticResource Secondary}"
-                    HorizontalOptions="End"
-                    TextColor="White"
-                    HeightRequest="40"
-                    WidthRequest="90"
-                    Margin="0,8">
-                    <Button.ImageSource>
-                        <FontImageSource FontFamily="FluentIcons"
-                        Glyph="&#x2b;"/>
-                    </Button.ImageSource>
+            <Button
+                Grid.Row="0"
+                Grid.Column="2"
+                Margin="0,8"
+                BackgroundColor="{x:StaticResource Secondary}"
+                Command="{Binding AddNewTransactionCommand}"
+                HeightRequest="40"
+                HorizontalOptions="End"
+                Text="{x:Static lang:AppResources.Btn_New}"
+                TextColor="White"
+                WidthRequest="90">
+                <Button.ImageSource>
+                    <FontImageSource FontFamily="FluentIcons" Glyph="&#x2b;" />
+                </Button.ImageSource>
             </Button>
 
-            <ctrl:BorderedEntry 
-                    Placeholder="Search Any Keyword"
-                    PlaceholderColor="#88A9A9A9"
-                    PlaceholderFontFamily="RalewayRegular"
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Text="{Binding SearchText}"
-                    CornerRadius="12"
-                    FontSize="18"
-                    BorderColor="#707070"/>
+            <ctrl:BorderedEntry
+                Grid.Row="1"
+                Grid.Column="0"
+                BorderColor="#707070"
+                CornerRadius="12"
+                FontSize="14"
+                Placeholder="{x:Static lang:AppResources.Lbl_Placeholder_SearchAnyKeyword}"
+                PlaceholderColor="#88A9A9A9"
+                PlaceholderFontFamily="RalewayRegular"
+                Text="{Binding SearchText}" />
 
-            <Button Text="{x:Static lang:AppResources.Btn_Search}" Command="{Binding SearchCommand}" BackgroundColor="{x:StaticResource Secondary}" Grid.Row="1" Grid.Column="1"/>
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                BackgroundColor="{x:StaticResource Secondary}"
+                Command="{Binding SearchCommand}"
+                Text="{x:Static lang:AppResources.Btn_Search}" />
 
             <CollectionView
-                Margin="0,8"
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
+                Margin="0,8"
                 ItemsSource="{Binding WalletTransactionList}"
                 ItemsUpdatingScrollMode="KeepItemsInView">
                 <CollectionView.ItemsLayout>
@@ -110,7 +116,7 @@
                                                 Opacity="0.8"
                                                 Offset="1,1" />
                                         </Border.Shadow>
-    
+
                                         <Image
                                             HeightRequest="30"
                                             Source="{Binding BudgetSubType.Icon}"
@@ -118,8 +124,8 @@
                                     </Border>
                                     <VerticalStackLayout
                                         Grid.Column="1"
-                                        VerticalOptions="Center"
-                                        Margin="8,0,0,0">
+                                        Margin="8,0,0,0"
+                                        VerticalOptions="Center">
                                         <Label
                                             FontAttributes="Bold"
                                             FontSize="Medium"

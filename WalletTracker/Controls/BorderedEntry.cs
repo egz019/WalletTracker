@@ -8,7 +8,7 @@ public class BorderedEntry : Microsoft.Maui.Controls.Entry
 {
     public BorderedEntry()
     {
-        BackgroundColor = Colors.Transparent;
+        BackgroundColor = Colors.White;
     }
 
     public static readonly BindableProperty BorderColorProperty = BindableProperty.Create(nameof(BorderColor), typeof(Color), typeof(BorderedEntry), Colors.Black);

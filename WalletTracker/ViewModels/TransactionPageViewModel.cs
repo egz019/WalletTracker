@@ -1,6 +1,3 @@
-
-using System.Threading.Tasks;
-
 namespace WalletTracker.ViewModels;
 
 public partial class TransactionPageViewModel : PageViewModelBase
@@ -25,7 +22,7 @@ public partial class TransactionPageViewModel : PageViewModelBase
     private async Task RefreshWalletTransactions()
     {
         var list = await _walletTransactionsManager.GetListOfWalletTransactionsAsync();
-        WalletTransactionList = list.Select(x => new WalletItemTransactionModel
+        WalletTransactionList = [ .. list.Select(x => new WalletItemTransactionModel
         {
             TransactionId = x.TransactionId,
             BudgetType = new BudgetTypeModel()
@@ -43,17 +40,19 @@ public partial class TransactionPageViewModel : PageViewModelBase
             Amount = x.Amount,
             Description = x.Description,
             TransactionDate = x.TransactionDate,
-        }).ToList();
+        })];
     }
 
     protected override async Task OnNavigatedToAsync(INavigationParameters parameters)
     {
         await base.OnNavigatedToAsync(parameters);
 
-        if(parameters.TryGetValue<List<WalletItemTransactionModel>>(NavigationParameterKeys.WalletTransactions, out var transactions))
-        {
-            WalletTransactionList = transactions;
-        }
+        // if(parameters.TryGetValue<List<WalletItemTransactionModel>>(NavigationParameterKeys.WalletTransactions, out var transactions))
+        // {
+        //     WalletTransactionList = transactions;
+        // }
+        
+        await RefreshWalletTransactions();
     }
 
     protected override void OnAppearing()
@@ -85,6 +84,11 @@ public partial class TransactionPageViewModel : PageViewModelBase
     [RelayCommand]
     private void Search()
     {
+        if(string.IsNullOrEmpty(SearchText) || WalletTransactionList == null)
+        {
+            return;
+        }
+
         WalletTransactionList = [.. WalletTransactionList
         .Where(x => x.TransactionDate.Date.ToShortDateString().Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
         || x.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 

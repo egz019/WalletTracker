@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WalletTracker.Controls.BorderedPicker"
+             HeightRequest="40" HorizontalOptions="Start" VerticalOptions="FillAndExpand">
+    <Border Background="{x:StaticResource Tertiary}"
+                                Stroke="Black"
+                                StrokeShape="RoundRectangle 30">
+        <Border.Shadow>
+            <Shadow
+                Brush="Black"
+                Opacity="0.35"
+                Offset="1,0" />
+        </Border.Shadow>
+        <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="*">
+            <Picker x:Name="Picker" WidthRequest="180" Grid.Column="0" Grid.Row="0" BackgroundColor="Transparent"/>
+            <ImageButton Grid.Column="1" WidthRequest="20" HeightRequest="20" Grid.Row="0" Source="ic_chevrondown" BackgroundColor="Transparent"/>
+        </Grid>
+        
+    </Border>
+</ContentView>

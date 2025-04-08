@@ -208,7 +208,7 @@ public partial class HomePageViewModel : PageViewModelBase
     {
         var navigationParams = new NavigationParameters
         {
-            { NavigationParameterKeys.WalletTransactions, _walletTransactionList.ToList() }
+            { NavigationParameterKeys.WalletTransactions, WalletTransactionList.ToList() }
         };
         await NavigationService.SelectTabAsync(ViewNames.TransactionPage, navigationParams);//, new Uri($"TabbedPage\\selectedTab={ViewNames.TransactionPage}"));
 
