@@ -1,3 +1,8 @@
+
+using System.Threading.Tasks;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+
 namespace WalletTracker.ViewModels;
 
 public partial class TransactionPageViewModel : PageViewModelBase
@@ -7,8 +12,8 @@ public partial class TransactionPageViewModel : PageViewModelBase
 
     public TransactionPageViewModel(
         BaseServices baseServices, 
-    IWalletTransactionsManager walletTransactionsManager, 
-    IPreDataManager preDataManager) : base(baseServices)
+        IWalletTransactionsManager walletTransactionsManager, 
+        IPreDataManager preDataManager) : base(baseServices)
     {
         _walletTransactionsManager = walletTransactionsManager;
         _preDataManager = preDataManager;
@@ -16,13 +21,24 @@ public partial class TransactionPageViewModel : PageViewModelBase
         _walletTransactionsManager.WalletTransactionListChanged += async (s, e) =>
         {
             await RefreshWalletTransactions();
-        };  
+        };
+
+        ShowCurrentMonthTransactions = true;
+    }
+
+    protected override async Task InitializeAsync(INavigationParameters parameters)
+    {
+        await base.InitializeAsync(parameters);
+
+        await RefreshWalletTransactions();
     }
 
     private async Task RefreshWalletTransactions()
     {
         var list = await _walletTransactionsManager.GetListOfWalletTransactionsAsync();
-        WalletTransactionList = [ .. list.Select(x => new WalletItemTransactionModel
+        WalletTransactionList = [ .. list
+        .Where(_ => ShowCurrentMonthTransactions ? _.TransactionDate.Month == DateTime.Now.Month : _.TransactionDate.Year == DateTime.Now.Year)
+        .Select(x => new WalletItemTransactionModel
         {
             TransactionId = x.TransactionId,
             BudgetType = new BudgetTypeModel()
@@ -46,20 +62,8 @@ public partial class TransactionPageViewModel : PageViewModelBase
     protected override async Task OnNavigatedToAsync(INavigationParameters parameters)
     {
         await base.OnNavigatedToAsync(parameters);
-
-        // if(parameters.TryGetValue<List<WalletItemTransactionModel>>(NavigationParameterKeys.WalletTransactions, out var transactions))
-        // {
-        //     WalletTransactionList = transactions;
-        // }
-        
-        await RefreshWalletTransactions();
     }
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-    }
-
+    
     [ObservableProperty]
     private string _searchText;
 
@@ -74,11 +78,45 @@ public partial class TransactionPageViewModel : PageViewModelBase
     [ObservableProperty]
     private List<WalletItemTransactionModel> _walletTransactionList;
 
+    [ObservableProperty]
+    private bool _showCurrentMonthTransactions;
+
+    partial void OnShowCurrentMonthTransactionsChanged(bool oldValue, bool newValue)
+    {
+        if(oldValue != newValue)
+        {
+            MainThread.BeginInvokeOnMainThread(async () => { await RefreshWalletTransactions(); });     
+        }
+    }
+
     [RelayCommand]
     private async Task AddNewTransaction()
     {
         await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{ViewNames.AddNewTransactionPage}", 
         new NavigationParameters { { KnownNavigationParameters.UseModalNavigation, true }, {KnownNavigationParameters.Animated, true} });
+    }
+
+    [RelayCommand]
+    private async Task DeleteTransaction(WalletItemTransactionModel transaction)
+    {
+        if (transaction == null)
+        {
+            return;
+        }
+
+        var response = await App.Current.Windows[0].Page.DisplayAlert("Delete Transaction", "Are you sure you want to delete this transaction?", "Yes", "No");
+        if (!response)
+        {
+            return;
+        }
+
+        var isSuccess = await _walletTransactionsManager.DeleteWalletTransactionAsync(transaction.TransactionId);
+        if (isSuccess)
+        {
+            var toast = Toast.Make("Transaction deleted.", ToastDuration.Short);
+            await toast.Show();
+            await RefreshWalletTransactions();
+        }
     }
 
     [RelayCommand]
@@ -91,9 +129,9 @@ public partial class TransactionPageViewModel : PageViewModelBase
 
         WalletTransactionList = [.. WalletTransactionList
         .Where(x => x.TransactionDate.Date.ToShortDateString().Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
-        || x.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
-        || x.Amount.ToString().Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
-        || x.BudgetType.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
-        || x.BudgetSubType.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase))];
+                || x.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
+                || x.Amount.ToString().Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
+                || x.BudgetType.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
+                || x.BudgetSubType.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase))];
     }
 }

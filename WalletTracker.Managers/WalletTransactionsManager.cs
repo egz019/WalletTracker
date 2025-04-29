@@ -50,6 +50,8 @@ public class WalletTransactionsManager : ManagerBase, IWalletTransactionsManager
 
     public async Task<bool> DeleteWalletTransactionAsync(string transactionId)
     {
-        return Convert.ToBoolean(await _walletTransactionsRepository.DeleteWalletTransactionAsync(transactionId));
+        var result = Convert.ToBoolean(await _walletTransactionsRepository.DeleteWalletTransactionAsync(transactionId));
+        WalletTransactionListChanged?.Invoke(this, EventArgs.Empty);
+        return result;
     }
 }

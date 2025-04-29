@@ -16,33 +16,22 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+    <false/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
 		<string>processing</string>
 	</array>
-<!-- 	
-  <key>CFBundleLocalizations</key>
-  <array>
-    <string>en</string>
-  </array>
-<key>CFBundleDevelopmentRegion</key>
-<string>en</string>
- -->
-
+	<key>UIRequiresFullScreen</key>
+  	<true/>
 </dict>
 </plist>

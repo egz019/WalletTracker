@@ -1,61 +1,140 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-            xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="WalletTracker.Views.AddNewTransactionPage"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker"
-             xmlns:viewModels="clr-namespace:WalletTracker.ViewModels"
-             xmlns:material="clr-namespace:Plugin.MaterialDesignControls.Material3;assembly=Plugin.MaterialDesignControls"
-             WidthRequest="800"
-             HeightRequest="400"
-             Padding="8,16"
-             NavigationPage.HasNavigationBar="False"
-             x:DataType="viewModels:AddNewTransactionPageViewModel"
-             Background="{x:StaticResource Primary}">
-             <VerticalStackLayout Margin="12">
-                <Button 
-                Text="Close"
-                Command="{Binding CloseWindowCommand}"
-                HorizontalOptions="End"
-                BackgroundColor="{x:StaticResource Secondary}"
-                TextColor="White"
-                HeightRequest="40"
-                WidthRequest="90"
-                Margin="0,16">
-                <Button.ImageSource>
-                    <FontImageSource FontFamily="FluentIcons" Color="White"
-                    Glyph="&#xe711;"/>
-                </Button.ImageSource>
+    x:Class="WalletTracker.Views.AddNewTransactionPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker"
+    xmlns:material="clr-namespace:Plugin.MaterialDesignControls.Material3;assembly=Plugin.MaterialDesignControls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:WalletTracker.ViewModels"
+    Padding="8,16"
+    x:DataType="viewModels:AddNewTransactionPageViewModel"
+    Background="{x:StaticResource Primary}"
+    HeightRequest="400"
+    NavigationPage.HasNavigationBar="False"
+    WidthRequest="800">
+    <VerticalStackLayout Margin="12">
+        <Button
+            Margin="0,16"
+            BackgroundColor="{x:StaticResource Secondary}"
+            Command="{Binding CloseWindowCommand}"
+            HeightRequest="40"
+            HorizontalOptions="End"
+            Text="Close"
+            TextColor="White"
+            WidthRequest="90">
+            <Button.ImageSource>
+                <FontImageSource
+                    FontFamily="FluentIcons"
+                    Glyph="&#xe711;"
+                    Color="White" />
+            </Button.ImageSource>
         </Button>
-<Label Text ="Add New Transaction" FontSize="Title" Grid.Row="0" Grid.Column="0"/>
-<Grid Padding="4,8" ColumnDefinitions="120,*" RowDefinitions="20,Auto,Auto,Auto,Auto,Auto,40" RowSpacing="8" ColumnSpacing="8">
-        
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            FontSize="Title"
+            Text="Add New Transaction" />
 
-        <Label Text="Budget Type: " Grid.Row="1" Grid.Column="0" VerticalOptions="Center"/>
-      <!-- <material:MaterialPicker Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BudgetTypes}" ItemDisplayBinding="{Binding Description}" SelectedItem="{Binding SelectedBudgetType}"/> -->
-        <!-- <ctrl:BorderedPicker Grid.Row="1" Grid.Column="1" WidthRequest="400"/> -->
-        <Picker Grid.Row="1" Grid.Column="1"  ItemsSource="{Binding BudgetTypes}" ItemDisplayBinding="{Binding Description}" SelectedItem="{Binding SelectedBudgetType}"/>
+        <Border Margin="0,8" BackgroundColor="White">
+            <Border.Stroke>
+                <SolidColorBrush Color="#4a6f8c" />
+            </Border.Stroke>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" />
+            </Border.StrokeShape>
+            <Border.Shadow>
+                <Shadow Brush="#4a6f8c" Radius="5" />
+            </Border.Shadow>
+            <Grid
+                Padding="4,8"
+                ColumnDefinitions="120,*"
+                ColumnSpacing="8"
+                RowDefinitions="20,Auto,Auto,Auto,Auto,Auto,40"
+                RowSpacing="8">
 
-        <Label Text="Category: " Grid.Row="2" Grid.Column="0" VerticalOptions="Center"/>
-        <Picker Grid.Row="2" Grid.Column="1" ItemsSource="{Binding BudgetSubTypes}" ItemDisplayBinding="{Binding Description}" SelectedItem="{Binding SelectedBudgetSubType}"/>
 
-        <Label Text="Description: " Grid.Row="3" Grid.Column="0" VerticalOptions="Center"/>
-        <ctrl:BorderedEntry Grid.Row="3" Grid.Column="1" Text="{Binding Description}"/>
+                <Label
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="Budget Type: "
+                    VerticalOptions="Center" />
+                <!-- <material:MaterialPicker Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BudgetTypes}" ItemDisplayBinding="{Binding Description}" SelectedItem="{Binding SelectedBudgetType}"/> -->
+                <!-- <ctrl:BorderedPicker Grid.Row="1" Grid.Column="1" WidthRequest="400"/> -->
+                <Picker
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    ItemDisplayBinding="{Binding Description}"
+                    ItemsSource="{Binding BudgetTypes}"
+                    SelectedItem="{Binding SelectedBudgetType}" />
 
-        <Label Text="Amount: " Grid.Row="4" Grid.Column="0" VerticalOptions="Center"/>
-        <ctrl:BorderedEntry Grid.Row="4" Grid.Column="1" Keyboard="Numeric" Text="{Binding TransactionAmount}"/>
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="Category: "
+                    VerticalOptions="Center" />
+                <Picker
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    ItemDisplayBinding="{Binding Description}"
+                    ItemsSource="{Binding BudgetSubTypes}"
+                    SelectedItem="{Binding SelectedBudgetSubType}" />
 
-        <Label Text="Transaction Date: " Grid.Row="5" Grid.Column="0" VerticalOptions="Center"/>
-        <DatePicker Grid.Row="5" Grid.Column="1" Date="{Binding SelectedTransactionDate}"/>
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Text="Description: "
+                    VerticalOptions="Center" />
+                <ctrl:BorderedEntry
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Text="{Binding Description}" />
 
-        <HorizontalStackLayout Grid.Row="6" Grid.ColumnSpan="2" Spacing="16" HorizontalOptions="Center" >
-            <Button Text="Cancel" Grid.Row ="6" Grid.Column="0" BackgroundColor="Black" WidthRequest="150" Command="{Binding CancelCommand}"/>
-            <Button Text="Save" Grid.Row ="6" Grid.Column="1" BackgroundColor="Black" WidthRequest="150" Command="{Binding SaveCommand}"/>
-        </HorizontalStackLayout>
-    </Grid>
-             </VerticalStackLayout>
-             
+                <Label
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Text="Amount: "
+                    VerticalOptions="Center" />
+                <ctrl:BorderedEntry
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Keyboard="Numeric"
+                    Text="{Binding TransactionAmount}" />
 
-    
+                <Label
+                    Grid.Row="5"
+                    Grid.Column="0"
+                    Text="Transaction Date: "
+                    VerticalOptions="Center" />
+                <DatePicker
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    Date="{Binding SelectedTransactionDate}" />
+
+                <HorizontalStackLayout
+                    Grid.Row="6"
+                    Grid.ColumnSpan="2"
+                    HorizontalOptions="Center"
+                    Spacing="16">
+                    <Button
+                        Grid.Row="6"
+                        Grid.Column="0"
+                        BackgroundColor="Black"
+                        Command="{Binding CancelCommand}"
+                        Text="Cancel"
+                        WidthRequest="150" />
+                    <Button
+                        Grid.Row="6"
+                        Grid.Column="1"
+                        BackgroundColor="Black"
+                        Command="{Binding SaveCommand}"
+                        Text="Save"
+                        WidthRequest="150" />
+                </HorizontalStackLayout>
+            </Grid>
+        </Border>
+    </VerticalStackLayout>
+
+
+
 </ContentPage>

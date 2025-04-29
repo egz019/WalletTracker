@@ -1,10 +1,4 @@
-﻿
-using System.Windows.Input;
-using WalletTracker.Common;
-
-using WalletTracker.Managers;
-
-namespace WalletTracker.ViewModels;
+﻿namespace WalletTracker.ViewModels;
 
 public partial class HomePageViewModel : PageViewModelBase
 {
@@ -37,7 +31,9 @@ public partial class HomePageViewModel : PageViewModelBase
         _budgetSubTypes =  _preDataManager.BudgetSubTypes.ToList();
 
         _transactions = await _walletTransactionManager.GetListOfWalletTransactionsAsync();
-        WalletTransactionList = [.. _transactions.Select(x => new WalletItemTransactionModel
+        WalletTransactionList = [.. _transactions
+        .Where(x => x.TransactionDate.Month == DateTime.Now.Month && x.TransactionDate.Year == DateTime.Now.Year)
+        .Select(x => new WalletItemTransactionModel
         {
             TransactionId = x.TransactionId,
             BudgetType = new BudgetTypeModel()
@@ -64,7 +60,7 @@ public partial class HomePageViewModel : PageViewModelBase
         ChartFormatOptions = GetChartFormat();
         WalletChartData = GetChartData();
 
-         IsBusy = false;
+        IsBusy = false;
     }
 
     [ObservableProperty]
@@ -85,7 +81,9 @@ public partial class HomePageViewModel : PageViewModelBase
     private async Task RefreshWalletTransactions()
     {
         _transactions = await _walletTransactionManager.GetListOfWalletTransactionsAsync();
-        WalletTransactionList = [.. _transactions.Select(x => new WalletItemTransactionModel
+        WalletTransactionList = [.. _transactions
+        .Where(x => x.TransactionDate.Month == DateTime.Now.Month && x.TransactionDate.Year == DateTime.Now.Year)
+        .Select(x => new WalletItemTransactionModel
         {
             TransactionId = x.TransactionId,
             BudgetType = new BudgetTypeModel()
@@ -130,9 +128,9 @@ public partial class HomePageViewModel : PageViewModelBase
     }
 
     [ObservableProperty]
-     private object _walletChartData;
+    private object _walletChartData;
 
-     private object GetChartData()
+    private object GetChartData()
     {
         if (!WalletTransactionList.Any())
         {
@@ -172,22 +170,20 @@ public partial class HomePageViewModel : PageViewModelBase
 
     public bool IsBusy { get; private set; }
 
-    private object GetChartFormat()
-     => new
+    private object GetChartFormat() => new
     {
-        fontSize = 10,
+        fontSize = DeviceInfo.Current.Platform == DevicePlatform.Android ? "10" : "12",
         fontName = "Raleway-Regular",
         chartArea = new
         {
-            width = "90%",
-            height = "70%"
+            width = DeviceInfo.Current.Platform == DevicePlatform.Android ? "90%" : "35%",
+            height = DeviceInfo.Current.Platform == DevicePlatform.Android ? "70%" : "85%",
         },
         colors = new[] { "#87BB62", "#4394E5", "#B6A6E9", "#F8AE54", "#CA6C0F", "#003366", "#21134D" },
         legend = new
         {
             position = "right",
             textStyle = new { fontSize = 10 },
-
         },
         tooltip = new
         {
@@ -210,154 +206,7 @@ public partial class HomePageViewModel : PageViewModelBase
         {
             { NavigationParameterKeys.WalletTransactions, WalletTransactionList.ToList() }
         };
-        await NavigationService.SelectTabAsync(ViewNames.TransactionPage, navigationParams);//, new Uri($"TabbedPage\\selectedTab={ViewNames.TransactionPage}"));
 
+        await NavigationService.SelectTabAsync(ViewNames.TransactionPage, navigationParams);
     }
-
-    //public Chart WalletChart => GetChart();
-
-    //private DonutChart GetChart()
-    //{
-    //    var chartEntries = new List<ChartEntry>();
-
-    //    if (BudgetList.Count <= 0)
-    //    {
-    //        return new DonutChart();
-    //    }
-
-    //    var groupedItems = BudgetList
-    //            .GroupBy(x => x.BudgetSubType.ToString())
-    //            .Select(x => new
-    //            {
-    //                Transaction = x.Key,
-    //                Amount = (float?)x.Sum(y => y.Amount)
-    //            });
-
-    //    foreach (var item in groupedItems)
-    //    {
-    //        chartEntries.Add(new Microcharts.ChartEntry(item.Amount)
-    //        {
-    //            Label = item.Transaction,
-    //            ValueLabel = item.Amount.ToString(),
-    //            Color = GetBudgetSubTypeLegendColor(item.Transaction)
-    //        });
-    //    }
-
-    //    return new DonutChart
-    //    {
-    //        Entries = chartEntries
-    //    };
-    //}
-
-
-
-    //public object WalletChartData => GetChartData();
-
-    //private object GetChartData()
-    //{
-    //    //if (BudgetList.Count <= 0)
-    //    //{
-    //    //    return new object;
-    //    //}
-
-    //    var groupedItems = BudgetList
-    //            .GroupBy(x => _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description)
-    //            .Select(x => new
-    //            {
-    //                Transaction = x.Key,
-    //                Amount = (float?)x.Sum(y => y.Amount)
-    //            });
-
-    //    var columnData = new List<object>()
-    //        {
-    //            new { id = "", label = "Budget Sub Type", pattern = "", type = "string" },
-    //            new { id = "", label = "Total Amount", pattern = "", type = "number" }
-    //        };
-
-    //    var rowsData = new List<object>();
-
-    //    foreach (var item in groupedItems)
-    //    {
-    //        rowsData.Add(new { c = new List<object> { new { v = item.Transaction }, new { v = item.Amount } } });
-    //    }
-
-    //    return new
-    //    {
-    //        cols = columnData,
-    //        rows = rowsData
-    //    };
-    //}
-
-    //public static object ChartFormatOptions => new
-    //{
-    //    fontSize = 10,
-    //    fontName = "Raleway-Regular",
-    //    chartArea = new
-    //    {
-    //        width = "90%",
-    //        height = "70%"
-    //    },
-    //    legend = new
-    //    {
-    //        position = "right",
-    //        textStyle = new { fontSize = 10 },
-
-    //    },
-    //    tooltip = new
-    //    {
-    //        isHtml = true,
-    //        showColorCode = true
-    //    },
-    //    animation = new
-    //    {
-    //        duration = 1000,
-    //        easing = "out",
-    //        startup = true
-    //    },
-    //    pieHole = 0.35,
-    //};
-
-    //private SKColor GetBudgetSubTypeLegendColor(string budgetSubType)
-    //{
-    //    return budgetSubType switch
-    //    {
-    //        "Salary" => SKColor.Parse("#77d065"),
-    //        "Utilities" => SKColor.Parse("#f14668"),
-    //        "Rent" => SKColor.Parse("#3d85c6"),
-    //        "Transportation" => SKColor.Parse("#846ec5"),
-    //        "Food" => SKColor.Parse("#2c48df"),
-    //        "Shopping" => SKColor.Parse("#f4bd18"),
-    //        "Miscellaneous" => SKColor.Parse("#ef8e29"),
-    //        _ => SKColor.Parse("#f14668"),
-    //    };
-    //}
-
-
-
-    //private List<BudgetItemAccountModel> GetBudgetList()
-    //{
-    //    _budgetItems.AddRange(new BudgetItemAccountModel[] {
-    //        new BudgetItemAccountModel{Id = 1, BudgetType = BudgetType.Income, BudgetSubType = BudgetSubType.Salary, Amount = 11500, Description = "Main Salary"},
-    //        new BudgetItemAccountModel{Id = 2, BudgetType = BudgetType.Income, BudgetSubType = BudgetSubType.Salary, Amount = 1500, Description = "Side Hustle Salary"},
-    //        new BudgetItemAccountModel{Id = 3, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Utilities, Amount = 200, Description = "Electric bill"},
-    //        new BudgetItemAccountModel{Id = 4, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Rent, Amount = 1200, Description = "Apartment rent"},
-    //        new BudgetItemAccountModel{Id = 5, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Food, Amount = 800, Description = "Groceries"},
-    //        new BudgetItemAccountModel{Id = 6, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Utilities, Amount = 400, Description = "Gas"},
-    //        new BudgetItemAccountModel{Id = 7, BudgetType = BudgetType.Expense, BudgetSubType = BudgetSubType.Miscellaneous, Amount = 100, Description = "Donation"},
-    //    });
-
-    //    return _budgetItems;
-    //}
-
-   
-   
-
-    //[RelayCommand(AllowConcurrentExecutions = false)]
-    //private async Task TryMeTapped()
-    //{
-    //    CurrentMonthText = "Month";
-
-    //    SemanticScreenReader.Announce(CurrentMonthText);
-    //}
-
 }

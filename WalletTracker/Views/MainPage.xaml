@@ -11,14 +11,15 @@
     x:DataType="viewModels:MainPageViewModel"
     BarBackgroundColor="White"
     SelectedTabColor="#28282B"
-    UnselectedTabColor="#c5c5c5">
+    UnselectedTabColor="#c5c5c5"
+    Title="Wallet Tracker">
 
     <TabbedPage.Behaviors> 
          <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
     </TabbedPage.Behaviors>
 
-    <views:HomePage Title="" IconImageSource="ic_home" />
-    <views:TransactionPage Title="" IconImageSource="ic_transactions" />
-    <views:ReportsPage Title="" IconImageSource="ic_budget_monitor" />
+    <views:HomePage NavigationPage.BackButtonTitle=""  NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" IconImageSource="ic_home"/>
+    <views:TransactionPage NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" IconImageSource="ic_transactions" />
+    <views:ReportsPage NavigationPage.HasNavigationBar="False" NavigationPage.HasBackButton="False" IconImageSource="ic_budget_monitor"/>
 
 </TabbedPage>
