@@ -7,6 +7,7 @@
     xmlns:lang="clr-namespace:WalletTracker.Localization;assembly=WalletTracker.Localization"
     xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModels="clr-namespace:WalletTracker.ViewModels"
+    xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker"
     x:DataType="viewModels:ReportsPageViewModel"
     BackgroundColor="{StaticResource Primary}"
     NavigationPage.HasNavigationBar="False">
@@ -22,12 +23,13 @@
     </ContentPage.Resources>
 
     <StackLayout
-        Margin="16"
+        Margin="8,16"
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
-        <Label FontSize="24" Text="{x:Static lang:AppResources.Lbl_Statistics}" />
 
-        <Border BackgroundColor="White">
+        <Label Style="{StaticResource LabelTitleStyle}" Text="{x:Static lang:AppResources.Lbl_Statistics}" />
+
+        <!-- <Border BackgroundColor="White">
             <Border.Stroke>
                 <SolidColorBrush Color="#4a6f8c" />
             </Border.Stroke>
@@ -36,31 +38,32 @@
             </Border.StrokeShape>
             <Border.Shadow>
                 <Shadow Brush="#4a6f8c" Radius="5" />
-            </Border.Shadow>
+            </Border.Shadow> -->
 
             <Label Margin="0,4,0,8" Text="Filters" />
 
             <Grid Margin="4"
                 ColumnDefinitions="150, *"
-                ColumnSpacing="2"
+                ColumnSpacing="0"
                 HeightRequest="200"
                 RowDefinitions="40, 40, Auto, Auto"
-                RowSpacing="4"
-                WidthRequest="300">
+                RowSpacing="2">
 
                 <RadioButton
                     Grid.Row="0"
                     Grid.Column="0"
                     Content="Monthly"
                     GroupName="ReportFilter"
-                    IsChecked="{Binding IsMonthly}" />
+                    IsChecked="{Binding IsMonthly}"
+                    VerticalOptions="Center" />
 
                 <RadioButton
                     Grid.Row="1"
                     Grid.Column="0"
                     Content="Annual"
                     GroupName="ReportFilter"
-                    IsChecked="{Binding IsAnnual}" />
+                    IsChecked="{Binding IsAnnual}"
+                    VerticalOptions="Center" />
 
                 <StackLayout
                     Grid.Column="1"
@@ -68,16 +71,16 @@
                     IsVisible="{Binding IsMonthly}"
                     Orientation="Horizontal">
                     <Label
-                        FontSize="18"
                         HorizontalOptions="Center"
                         Text="Month: "
                         VerticalOptions="Center" />
-                    <DatePicker
+                    <ctrl:BorderedDatePicker
                         Grid.Row="0"
                         Grid.Column="1"
                         Date="{Binding MonthFilter}"
                         Format="MMMM-yyyy"
-                        HorizontalOptions="Center" />
+                        HorizontalOptions="Center"
+                        WidthRequest="120"/>
                 </StackLayout>
 
                 <StackLayout
@@ -85,38 +88,42 @@
                     IsVisible="{Binding IsAnnual}"
                     Orientation="Horizontal">
                     <Label
-                        FontSize="18"
                         HorizontalOptions="Center"
-                        Text="Annual:"
+                        Text="Annual: "
                         VerticalOptions="Center" />
-                    <DatePicker
+                    <ctrl:BorderedDatePicker
                         Grid.Row="0"
                         Grid.Column="1"
                         Date="{Binding YearFilter}"
                         Format="yyyy"
-                        HorizontalOptions="Center" />
+                        WidthRequest="120"
+                        HorizontalOptions="Center"
+                        />
                 </StackLayout>
 
                 <StackLayout
+                    Margin="8"
                     Grid.Row="2"
                     Grid.ColumnSpan="2"
                     HorizontalOptions="FillAndExpand"
-                    Orientation="Horizontal">
+                    Orientation="Horizontal"
+                    VerticalOptions="FillAndExpand">
                     <CheckBox IsChecked="{Binding ExcludeTransfers}" Color="Black" />
-                    <Label Text="Exclude Income" VerticalOptions="Center" />
+                    <Label Text="Exclude Income" HorizontalOptions="End" VerticalOptions="Center" />
                 </StackLayout>
 
                 <Button
                     Grid.Row="3"
                     Grid.ColumnSpan="2"
-                    Margin="0,16,0,8"
+                    Margin="0,16,0,4"
                     BackgroundColor="{x:StaticResource Secondary}"
                     Command="{Binding GenerateReportCommand}"
                     Text="Generate Report" />
             </Grid>
-        </Border>
+        <!-- </Border> -->
 
-        <Border BackgroundColor="White" HeightRequest="500">
+        <Border BackgroundColor="White" 
+            HeightRequest="{OnPlatform Android=500, iOS=400, Default=500}">
             <Border.Stroke>
                 <SolidColorBrush Color="#4a6f8c" />
             </Border.Stroke>
@@ -127,43 +134,43 @@
                 <Shadow Brush="#4a6f8c" Radius="5" />
             </Border.Shadow>
 
+<!-- ios 400 -->
             <ScrollView
-                BackgroundColor="Transparent"
-                HeightRequest="500"
+                HeightRequest="{OnPlatform Android=380, iOS=380, Default=380}"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand">
 
-                <Grid
-                    Padding="0,8,0,8"
+                <Grid Margin="4"
                     HorizontalOptions="FillAndExpand"
                     RowDefinitions="Auto, Auto"
-                    RowSpacing="16"
+                    RowSpacing="8"
                     VerticalOptions="FillAndExpand">
 
-                    <Label
+                    <Label Margin="4"
                         Grid.Row="0"
-                        FontSize="24"
+                        FontSize="18"
                         HorizontalOptions="Center"
                         IsVisible="{Binding HasReportData, Converter={StaticResource InvertedBoolConverter}}"
                         Text="No data to display" />
 
                     <StackLayout
+                        Margin="8"
                         Grid.Row="0"
                         HorizontalOptions="FillAndExpand"
                         IsVisible="{Binding HasReportData}"
                         VerticalOptions="FillAndExpand">
 
                         <Label
-                            FontSize="Title"
+                            FontSize="16"
                             HorizontalTextAlignment="Center"
                             Text="Main Report" />
 
                         <charts:GoogleChartsView
                             ChartType="PieChart"
                             Data="{Binding MainReportData}"
-                            HeightRequest="180"
-                            Options="{Binding MainFormatOptions}"
-                            WidthRequest="300" />
+                            HeightRequest="{OnPlatform Android=180, iOS=180, Default=180}"
+                            WidthRequest="{OnPlatform Android=300, iOS=900, Default=300}"
+                            Options="{Binding MainFormatOptions}"/>
                     </StackLayout>
 
                     <StackLayout
@@ -173,13 +180,15 @@
                         VerticalOptions="FillAndExpand">
 
                         <Label
-                            FontSize="Title"
+                            FontSize="16"
                             HorizontalTextAlignment="Center"
                             Text="{Binding IncomeVsExpenseTitle}" />
 
                         <charts:GoogleChartsView
                             ChartType="BarChart"
-                            Data="{Binding SubReportData}"
+                            Data="{Binding IncomeVsExpenseReportData}"
+                            HeightRequest="{OnPlatform Android=180, iOS=250, Default=180}"
+                            WidthRequest="{OnPlatform Android=300, iOS=900, Default=300}"
                             HorizontalOptions="FillAndExpand"
                             IsVisible="{Binding IsAnnual}"
                             Options="{Binding IncomeVsExpenseFormatOptions}"
@@ -199,10 +208,11 @@
 
                         <charts:GoogleChartsView
                             ChartType="BarChart"
-                            Data="{Binding SubReportData}"
-                            HeightRequest="400"
+                            Data="{Binding IncomeVsExpenseReportData}"
+                            HeightRequest="{OnPlatform Android=180, iOS=180, Default=180}"
+                            WidthRequest="{OnPlatform Android=300, iOS=900, Default=300}"
                             HorizontalOptions="FillAndExpand"
-                            IsVisible="{Binding IsAnnual}"
+                            IsVisible="{Binding IsMonthly}"
                             Options="{Binding IncomeVsExpenseFormatOptions}"
                             VerticalOptions="FillAndExpand" />
                     </StackLayout>

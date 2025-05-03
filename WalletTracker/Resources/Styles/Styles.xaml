@@ -9,7 +9,8 @@ xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker">
         <Setter Property="BorderColor" Value="#707070"/>
         <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="FontFamily" Value="RalewayRegular" />
-        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="HeightRequest" Value="35"/>
         <Setter Property="PlaceholderColor" Value="#88A9A9A9" />
         <Setter Property="PlaceholderFontFamily" Value="RalewayRegular"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -26,9 +27,95 @@ xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker">
         </Setter>
     </Style>
 
-    <Style TargetType="Label">
+
+    <Style TargetType="ctrl:BorderedPicker">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="#707070"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="FontFamily" Value="RalewayRegular" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="PlaceholderColor" Value="#88A9A9A9" />
+        <Setter Property="PlaceholderFontFamily" Value="RalewayRegular"/>
+        <Setter Property="HeightRequest" Value="35"/>
+        <Setter Property="Image" Value="ic_dropdown.png"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ctrl:BorderedDatePicker">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="#707070"/>
+        <Setter Property="BorderWidth" Value="1"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="FontFamily" Value="RalewayRegular" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="HeightRequest" Value="35"/>
+        <Setter Property="Image" Value="ic_calendar.png"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="BaseLabelStyle">
         <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
         <Setter Property="FontFamily" Value="RalewayRegular" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="LabelTitleStyle" BasedOn="{StaticResource BaseLabelStyle}">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="HeaderContentStyle">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
+        <Setter Property="FontFamily" Value="RalewayRegular" />
+        <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -171,6 +258,8 @@ xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker">
         <Setter Property="BorderColor" Value="Transparent" />
         <Setter Property="BorderWidth" Value="0" />
         <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="MinimumWidthRequest" Value="0" />
+        <Setter Property="MinimumHeightRequest" Value="0" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">

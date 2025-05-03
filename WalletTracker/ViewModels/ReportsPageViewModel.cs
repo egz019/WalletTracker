@@ -112,7 +112,8 @@ public partial class ReportsPageViewModel : PageViewModelBase
             columnData.Add(new { id = "", label = item.Description, pattern = "", type = "number" });
         }
 
-        var baseData = walletData.Select(x => new
+        var baseData = walletData
+        .Select(x => new
         {
             Month = x.TransactionDate.ToString("MMM", CultureInfo.InvariantCulture),
             BudgetType = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType.Code).Description,
@@ -120,7 +121,8 @@ public partial class ReportsPageViewModel : PageViewModelBase
             ExpenseAmount = x.BudgetType.IsAdd ? 0 : x.Amount
         });
 
-        var groupedItems = baseData.GroupBy(x => new
+        var groupedItems = baseData
+        .GroupBy(x => new
         {
             Month = x.Month,
         })
@@ -163,14 +165,18 @@ public partial class ReportsPageViewModel : PageViewModelBase
         var baseData = walletData.Select(x => new
         {
             Month = x.TransactionDate.ToString("MMM", CultureInfo.InvariantCulture),
+            MonthKey = x.TransactionDate.Month,
             BudgetType = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType.Code).Description,
             IncomeAmount = x.BudgetType.IsAdd ? x.Amount : 0,
             ExpenseAmount = x.BudgetType.IsAdd ? 0 : x.Amount
         });
 
-        var groupedItems = baseData.GroupBy(x => new
+        var groupedItems = baseData
+        .OrderBy(x => x.MonthKey)
+        .GroupBy(x => new
         {
             Month = x.Month,
+            MonthKey = x.MonthKey,
         })
         .Select(x => new
         {
@@ -182,6 +188,8 @@ public partial class ReportsPageViewModel : PageViewModelBase
         var rowsData = new List<object>();
         foreach (var item in groupedItems)
         {
+            // var month = DateTime.SpecifyKind(new DateTime(DateTime.Now.Year, item.Transaction.Month, 1), DateTimeKind.Local);
+            // rowsData.Add(new { c = new List<object> { new { v = month.ToString("MMM", CultureInfo.InvariantCulture) }, new { v = item.IncomeAmount }, new { v = item.ExpenseAmount } } });
             rowsData.Add(new { c = new List<object> { new { v = item.Transaction.Month }, new { v = item.IncomeAmount }, new { v = item.ExpenseAmount } } });
         }
 
@@ -207,8 +215,8 @@ public partial class ReportsPageViewModel : PageViewModelBase
         fontName = "Raleway-Regular",
         chartArea = new
         {
-            width = "90%",
-            height = "70%"
+            width = DeviceInfo.Current.Platform == DevicePlatform.Android ? "90%" : "35%",
+            height = DeviceInfo.Current.Platform == DevicePlatform.Android ? "70%" : "85%",
         },
         colors = new[] { "#87BB62", "#4394E5", "#B6A6E9", "#F8AE54", "#CA6C0F", "#003366", "#21134D" },
         legend = new
@@ -237,8 +245,8 @@ public partial class ReportsPageViewModel : PageViewModelBase
         fontName = "Raleway-Regular",
         chartArea = new
         {
-            width = "90%",
-            height = "70%"
+            width = DeviceInfo.Current.Platform == DevicePlatform.Android ? "90%" : "25%",
+            height = DeviceInfo.Current.Platform == DevicePlatform.Android ? "70%" : "85%",
         },
         lineWidth = 3,
         pointSize = 5,
@@ -340,13 +348,10 @@ public partial class ReportsPageViewModel : PageViewModelBase
         // title.Append($"Income vs Expense for {IsMonthly ? MonthFilter.ToString("MMMM", CultureInfo.InvariantCulture) MonthFilter.Year" : $"{MonthFilter.Year}");
 
         MainReportData = GetMainReportData(finalData);
-
-
         IncomeVsExpenseFormatOptions = InitializeIncomeVsExpenseReportFormat();
-        IncomeVsExpenseReportData = GetAnnualIncomeVsExpenseReportData(finalData);
+        IncomeVsExpenseReportData = IsAnnual ? GetAnnualIncomeVsExpenseReportData(finalData) : GetMonthlyIncomeVsExpenseReportData(finalData);
 
-
-
-        IncomeVsExpenseTitle = $"{YearFilter.Year} Income vs Expense Report";
+        var filterTitle = IsAnnual ? YearFilter.Year.ToString() : $"{MonthFilter.ToString("MMMM", CultureInfo.InvariantCulture)} {MonthFilter.Year} ";
+        IncomeVsExpenseTitle =  $"{filterTitle} Income vs Expense Report";
     }
 }

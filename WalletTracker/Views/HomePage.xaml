@@ -13,7 +13,17 @@
     xmlns:views="clr-namespace:WalletTracker.Views"
     BackgroundColor="{StaticResource Primary}"
     NavigationPage.HasNavigationBar="False"
+    Title=""
     x:DataType="viewModels:HomePageViewModel">
+
+    <Shell.TitleView>
+        <Grid
+            VerticalOptions="Fill"
+            HorizontalOptions="Fill"
+            BackgroundColor="DarkGreen">
+        </Grid>
+    </Shell.TitleView>
+
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -25,19 +35,21 @@
         <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />
     </Page.Behaviors>
 
-     <Grid IgnoreSafeArea="True"
+     <Grid 
         Margin="8,0,8,8"
         RowDefinitions="Auto,Auto,*"
         RowSpacing="0">
 
-        <Grid IgnoreSafeArea="True" BackgroundColor="Red"
+        <Grid
             Grid.Row="0"
-            Margin="0,0,0,8"
-            RowDefinitions="25,*,5">
-            <Label FontSize="18" Text="{x:Static lang:AppResources.Lbl_Goodday}" />
+            Margin="0,4,0,8"
+            RowDefinitions="25,Auto"
+            RowSpacing="0">
+            <Label Grid.Row="0" VerticalOptions="End" Style="{StaticResource HeaderContentStyle}" Text="{x:Static lang:AppResources.Lbl_Goodday}" />
             <Label
                 Grid.Row="1"
-                FontAttributes="Bold"
+                VerticalOptions="Start"
+                FontFamily="RalewayMediumItalic"
                 FontSize="24"
                 Text="Edgar Allan" />
         </Grid>
@@ -55,13 +67,7 @@
             Stroke="#4a6f8c"
             StrokeShape="RoundRectangle 10"
             WidthRequest="350">
-            <!-- <Border.Shadow>
-                <Shadow
-                    Brush="White"
-                    Opacity="0.4"
-                    Offset="1,1" />
-            </Border.Shadow> -->
-
+            
             <Border.Stroke>
                 <SolidColorBrush Color="#4a6f8c" />
             </Border.Stroke>
@@ -72,13 +78,13 @@
                 <Shadow Brush="#4a6f8c" Radius="5" />
             </Border.Shadow>
             
-            <StackLayout IgnoreSafeArea="True" Margin="2,4" VerticalOptions="Fill">
+            <StackLayout  Margin="4,0,4,4" VerticalOptions="FillAndExpand">
                 <Label
                     FontSize="Title"
                     HorizontalTextAlignment="Center"
                     Text="{Binding CurrentMonthText, StringFormat='{x:Static lang:AppResources.Lbl_CurrentMonthWallet}'}" />
 
-                <StackLayout IgnoreSafeArea="True" Margin="8,0,8,8" VerticalOptions="Fill">
+                <StackLayout  Margin="8,0,8,8" VerticalOptions="Fill">
                     <charts:GoogleChartsView
                         x:Name= "WalletPieChart"
                         ChartType= "PieChart"
@@ -88,63 +94,58 @@
                         WidthRequest="{OnPlatform Android=300, iOS=900, Default=300}"
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="FillAndExpand"/>
-                    <Grid IgnoreSafeArea="True" RowDefinitions="*,*" ColumnDefinitions="Auto,*,*">
+                    <Grid Margin="4,8" RowDefinitions="*,*" ColumnDefinitions="Auto,*,*">
                         <Label
                             Grid.Row="0"
                             Grid.Column="0"
                             FontAttributes="Bold"
-                            FontSize="Body"
                             Text="Total Income:" />
                         <Label 
                             Margin="8,0"
                             Grid.Row="0"
                             Grid.Column="1"
-                            FontAttributes="Bold"
-                            FontSize="Body"
+                            VerticalOptions="Center"
                             Text="{Binding TotalAmountPerIncome, StringFormat='{0:C2}'}" />
                         <Label
                             Grid.Row="1"
                             Grid.Column="0"
                             FontAttributes="Bold"
-                            FontSize="Body"
                             Text="Total Expense:" />
                         <Label Margin="8,0"
                             Grid.Row="1"
                             Grid.Column="1"
-                            FontAttributes="Bold"
-                            FontSize="Body"
+                            VerticalOptions="Center"
                             Text="{Binding TotalAmountPerExpense, StringFormat='{0:C2}'}" />
-                        <!-- <Button HeightRequest="25" BackgroundColor="Green" Text="More Reports" FontSize="8" Grid.Column = "2" Grid.RowSpan="2"/> -->
                     </Grid>
                 </StackLayout>
             </StackLayout>
         </Border>
 
-        <StackLayout IgnoreSafeArea="True"
+        <StackLayout 
             Grid.Row="2"
             Margin="0,8,0,16"
             Orientation="Vertical">
             <Label
-                FontAttributes="Bold"
-                FontFamily="RalewayBold"
-                FontSize="24"
+                Style="{StaticResource LabelTitleStyle}"
                 Text="Wallet Activities" />
                 
             <!--  Show ONLY TOP 3 or 5 RECORDS  -->
             <CollectionView
                 Margin="0,8,0,8"
-                HeightRequest="{OnPlatform Android=330, iOS=600, Default=330}"
+                HeightRequest="{OnPlatform Android=380, iOS=280, Default=380}"
                 ItemsSource="{Binding Top5WalletTransactionList}"
                 ItemsUpdatingScrollMode="KeepItemsInView"
                 x:Name="WalletCollectionView"
                 >
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout ItemSpacing="16" Orientation="Vertical" />
+                    <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.EmptyViewTemplate>
                     <DataTemplate>
-                        <Label HorizontalOptions="Center" Text="No available transactions" />
+                    <StackLayout VerticalOptions="Center">
+                        <Label HorizontalOptions="Center" Text="{x:Static lang:AppResources.Lbl_NoAvailableTransactions}" />
+                    </StackLayout>
                     </DataTemplate>
                 </CollectionView.EmptyViewTemplate>
 
@@ -182,7 +183,7 @@
                                                 Offset="1,1" />
                                         </Border.Shadow>
     
-                                        <Image
+                                        <Image Aspect="AspectFill"
                                             HeightRequest="30"
                                             Source="{Binding BudgetSubType.Icon}"
                                             WidthRequest="30" />
@@ -214,7 +215,9 @@
                 </CollectionView.ItemTemplate>
             <CollectionView.FooterTemplate>
                 <DataTemplate x:DataType="viewModels:HomePageViewModel">
-                    <Button Text="View More" Margin="0,16,0,0" HeightRequest="150" Command="{Binding Source={x:Reference WalletCollectionView}, Path=BindingContext.ViewMoreCommand}" BackgroundColor="{x:StaticResource Secondary}"/>
+                <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Button Text="View More" Margin="0,8,0,0" HeightRequest="40" Command="{Binding Source={x:Reference WalletCollectionView}, Path=BindingContext.ViewMoreCommand}" BackgroundColor="{x:StaticResource Secondary}"/>
+                </StackLayout>
                 </DataTemplate>
             </CollectionView.FooterTemplate>
             </CollectionView>

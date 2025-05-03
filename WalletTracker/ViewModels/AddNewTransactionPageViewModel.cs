@@ -8,7 +8,6 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
 {
     private readonly IWalletTransactionsManager _walletTransactionsManager;
     private readonly IPreDataManager _preDataManager;
-
     private List<BudgetSubTypeModel> _budgetSubTypeList;
 
     public AddNewTransactionPageViewModel(
@@ -47,7 +46,7 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
         })];
         //BudgetSubTypes;
 
-        SelectedTransactionDate = DateTime.Now;
+        //SelectedTransactionDate = DateTime.Now;
     }
 
     [ObservableProperty]
@@ -61,15 +60,15 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private string _description;
+    private string _description = string.Empty;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private decimal _transactionAmount;
+    private decimal _transactionAmount = 0;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private DateTime _selectedTransactionDate;
+    private DateTime _selectedTransactionDate = DateTime.Now;
 
     [ObservableProperty]
     private List<BudgetTypeModel> _budgetTypes;

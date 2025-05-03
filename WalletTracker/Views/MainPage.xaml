@@ -12,7 +12,7 @@
     BarBackgroundColor="White"
     SelectedTabColor="#28282B"
     UnselectedTabColor="#c5c5c5"
-    Title="Wallet Tracker">
+    Title="">
 
     <TabbedPage.Behaviors> 
          <mct:StatusBarBehavior StatusBarColor="{StaticResource Primary}" StatusBarStyle="DarkContent" />

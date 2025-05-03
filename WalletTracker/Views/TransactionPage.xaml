@@ -18,17 +18,15 @@
     </ContentPage.Behaviors>
 
     <StackLayout
-        Margin="16,24"
+        Margin="8,16"
         HorizontalOptions="Fill"
         VerticalOptions="Fill">
         <Label
-            FontSize="24"
-            Text="{x:Static lang:AppResources.Lbl_WalletTransactions}"
-            TextColor="Black"
+            Style="{StaticResource LabelTitleStyle}"
             VerticalOptions="Center" />
 
         <Grid
-            Padding="16"
+            Padding="8"
             ColumnDefinitions="*,Auto"
             ColumnSpacing="4"
             RowDefinitions="Auto,*,*,600">
@@ -52,12 +50,7 @@
             <ctrl:BorderedEntry
                 Grid.Row="1"
                 Grid.Column="0"
-                BorderColor="#707070"
-                CornerRadius="12"
-                FontSize="14"
                 Placeholder="{x:Static lang:AppResources.Lbl_Placeholder_SearchAnyKeyword}"
-                PlaceholderColor="#88A9A9A9"
-                PlaceholderFontFamily="RalewayRegular"
                 Text="{Binding SearchText}" />
 
             <Button
@@ -77,18 +70,22 @@
                 </StackLayout>
 
             <CollectionView
+                HeightRequest="{OnPlatform Android=580, iOS=500, Default=600}"
                 Grid.Row="3"
                 Grid.ColumnSpan="2"
-                Margin="8,0,8,8"
+                Margin="0,0,0,8"
                 ItemsSource="{Binding WalletTransactionList}"
-                ItemsUpdatingScrollMode="KeepItemsInView">
+                ItemsUpdatingScrollMode="KeepItemsInView"
+                VerticalOptions="StartAndExpand">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout ItemSpacing="16" Orientation="Vertical" />
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.EmptyViewTemplate>
                     <DataTemplate>
-                        <Label HorizontalOptions="Center" Text="{x:Static lang:AppResources.Lbl_NoAvailableTransactions}" />
+                        <StackLayout VerticalOptions="Center">
+                            <Label HorizontalOptions="Center" Text="{x:Static lang:AppResources.Lbl_NoAvailableTransactions}" />
+                        </StackLayout>
                     </DataTemplate>
                 </CollectionView.EmptyViewTemplate>
 

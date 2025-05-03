@@ -10,7 +10,7 @@ public class AppDelegate : MauiUIApplicationDelegate
 
     // public override bool WillFinishLaunching(UIApplication application, NSDictionary launchOptions)
     // {
-	// 	// UIView statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
+    // 	// UIView statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
     //     // if (statusBar != null && statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
     //     // {
     //     //     statusBar.BackgroundColor =UIColor.Yellow;
@@ -18,4 +18,11 @@ public class AppDelegate : MauiUIApplicationDelegate
 
     //     return base.WillFinishLaunching(application, launchOptions);
     // }
+
+    public override bool WillFinishLaunching(UIApplication application, NSDictionary launchOptions)
+    {
+        return base.WillFinishLaunching(application, launchOptions);
+
+        
+    }
 }

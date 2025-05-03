@@ -31,7 +31,7 @@ namespace WalletTracker.Platforms.iOS;
                     control.Font = UIFont.FromName(entry.FontFamily, (nfloat)entry.FontSize) ?? UIFont.SystemFontOfSize((nfloat)entry.FontSize);
                     control.TextColor = entry.TextColor.ToPlatform();
                     control.TintColor = entry.CursorColor.ToPlatform();
-                    control.AttributedPlaceholder = new NSAttributedString(entry.Placeholder, new UIStringAttributes { ForegroundColor = entry.PlaceholderColor.ToPlatform(), Font = UIFont.SystemFontOfSize((nfloat)entry.PlaceholderFontSize) });
+                    control.AttributedPlaceholder = new NSAttributedString(entry.Placeholder ?? string.Empty, new UIStringAttributes { ForegroundColor = entry.PlaceholderColor.ToPlatform(), Font = UIFont.SystemFontOfSize((nfloat)entry.PlaceholderFontSize) });
                 }
             }
         }

@@ -50,7 +50,7 @@ public static class MauiProgram
 
     private static void AddHandlers()
     {
-        Microsoft.Maui.Handlers.EntryHandler.ElementMapper.AppendToMapping(nameof(BorderedEntry), (handler, view)
+        Microsoft.Maui.Handlers.EntryHandler.ElementMapper.AppendToMapping(nameof(BorderedEntry), async (handler, view)
          => 
          {
             #if __ANDROID__ || __IOS__
@@ -58,7 +58,19 @@ public static class MauiProgram
                 {
                     EntryMapper.Map(handler, borderedEntry);
                 }
+                
+                if(view is BorderedPicker borderedPicker)
+                {
+                    await PickerMapper.Map(handler, borderedPicker);
+                }
+
+                if(view is BorderedDatePicker borderedDatePicker)
+                {
+                    await DatePickerMapper.Map(handler, borderedDatePicker);
+                }
             #endif
+
+            
          });
     }
 }

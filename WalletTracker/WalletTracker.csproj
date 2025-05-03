@@ -79,6 +79,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls/BorderedPickerx.xaml.cs">
+      <DependentUpon>BorderedPickerx.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <MauiXaml Update="Views\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
