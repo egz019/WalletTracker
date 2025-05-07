@@ -42,6 +42,13 @@ public class WalletTransactionsManager : ManagerBase, IWalletTransactionsManager
         return result;
     }
 
+    public async Task<bool> UpdateWalletTransactionAsync(WalletTransactionsEntity walletTransaction)
+    {
+        var result = Convert.ToBoolean(await _walletTransactionsRepository.UpdateWalletTransactionAsync(ManagerToolkit.Map<WalletTransactionsDto>(walletTransaction)));
+        WalletTransactionListChanged?.Invoke(this, EventArgs.Empty);
+        return result;
+    }
+
     public void SaveWalletTransactions(List<WalletTransactionsEntity> walletTransactions)
     {
         _walletTransactionsRepository.SaveWalletTransactions(ManagerToolkit.Map<List<WalletTransactionsDto>>(walletTransactions));

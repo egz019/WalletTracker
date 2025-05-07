@@ -1,6 +1,7 @@
 
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using WalletTracker.Extensions;
 
 namespace WalletTracker.ViewModels;
 
@@ -9,6 +10,8 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
     private readonly IWalletTransactionsManager _walletTransactionsManager;
     private readonly IPreDataManager _preDataManager;
     private List<BudgetSubTypeModel> _budgetSubTypeList;
+    private WalletItemTransactionModel transactionItem;
+    private bool _isInitializing = true;
 
     public AddNewTransactionPageViewModel(
         BaseServices baseServices,
@@ -32,22 +35,39 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
         })];
 
         var budgetSubTypeList = _preDataManager.BudgetSubTypes;
-        // BudgetSubTypes = [.. budgetSubTypeList.Select(_ => new BudgetSubTypeModel
-        // {
-        //     Code = _.Code,
-        //     Description = _.Description,
-        //     BudgetType = _.BudgetType
-        // })];
         _budgetSubTypeList = [.. budgetSubTypeList.Select(_ => new BudgetSubTypeModel
         {
             Code = _.Code,
             Description = _.Description,
             BudgetType = _.BudgetType
         })];
-        //BudgetSubTypes;
 
-        //SelectedTransactionDate = DateTime.Now;
+        BudgetSubTypes = _budgetSubTypeList;
     }
+
+    protected override async Task OnNavigatedToAsync(INavigationParameters parameters)
+    {
+        await base.OnNavigatedToAsync(parameters);
+
+        if(parameters.TryGetValue<WalletItemTransactionModel>("Transaction", out transactionItem))
+        {
+            if (transactionItem != null)
+            {
+                IsEditMode = true;
+                SelectedBudgetType = BudgetTypes.FirstOrDefault(x => x.Code == transactionItem.BudgetType.Code);
+                SelectedBudgetSubType = BudgetSubTypes.FirstOrDefault(x => x.Code == transactionItem.BudgetSubType.Code);
+
+                TransactionAmount = transactionItem.Amount;
+                Description = transactionItem.Description;
+                SelectedTransactionDate = transactionItem.TransactionDate;
+            }
+
+            _isInitializing = false;
+        }
+    }
+
+    [ObservableProperty]
+    private bool _isEditMode = false;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(BudgetSubTypes))]
@@ -81,7 +101,7 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
     // / </summary>
     partial void OnSelectedBudgetTypeChanged(BudgetTypeModel value)
     {
-        if (_budgetSubTypeList == null)
+        if (_budgetSubTypeList == null || _isInitializing)
         {
             return;
         }
@@ -105,10 +125,14 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
 
     partial void OnSelectedBudgetTypeChanged(BudgetTypeModel oldValue, BudgetTypeModel newValue)
     {
+        if(_isInitializing)
+        {
+            return;
+        }
+
         if (newValue != null && oldValue != newValue)
         {
-            BudgetSubTypes = _budgetSubTypeList
-            .Where(subType => subType.BudgetType == newValue.Code).ToList();
+            BudgetSubTypes = _budgetSubTypeList.Where(subType => subType.BudgetType == newValue.Code).ToList();
 
             SelectedBudgetSubType = null;
         }
@@ -127,15 +151,31 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
             {
                 try
                 {
-                    var isSuccess = await _walletTransactionsManager.SaveWalletTransactionAsync(new WalletTransactionsEntity
+                    var isSuccess = false;
+                    if (IsEditMode)
                     {
-                        TransactionId = Guid.NewGuid().ToString(),
-                        BudgetType = SelectedBudgetType.Code,
-                        BudgetSubType = SelectedBudgetSubType.Code,
-                        Amount = TransactionAmount,
-                        Description = Description,
-                        TransactionDate = SelectedTransactionDate
-                    });
+                        isSuccess = await _walletTransactionsManager.UpdateWalletTransactionAsync(new WalletTransactionsEntity
+                        {
+                            TransactionId = transactionItem.TransactionId,
+                            BudgetType = SelectedBudgetType.Code,
+                            BudgetSubType = SelectedBudgetSubType.Code,
+                            Amount = TransactionAmount,
+                            Description = Description,
+                            TransactionDate = SelectedTransactionDate
+                        });
+                    }
+                    else
+                    {
+                        isSuccess = await _walletTransactionsManager.SaveWalletTransactionAsync(new WalletTransactionsEntity
+                        {
+                            TransactionId = Guid.NewGuid().ToString(),
+                            BudgetType = SelectedBudgetType.Code,
+                            BudgetSubType = SelectedBudgetSubType.Code,
+                            Amount = TransactionAmount,
+                            Description = Description,
+                            TransactionDate = SelectedTransactionDate
+                        });
+                    }
 
                     if (isSuccess)
                     {
@@ -144,7 +184,6 @@ public partial class AddNewTransactionPageViewModel : PageViewModelBase
 
                         await CloseWindow();
                     }
-
                 }
                 catch (Exception ex)
                 {

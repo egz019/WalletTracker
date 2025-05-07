@@ -11,7 +11,7 @@ public interface IMobileDatabase
     Task<int> InsertAsync<T>(T item) where T : class, IDataObjectBase, new();
     Task<int> DeleteAllAsync<T>() where T : IDataObjectBase, new();
     Task<int> DeleteAsync<T>(int id) where T : IDataObjectBase, new();
-    Task<int> UpdateAsync<T>(T item) where T : IDataObjectBase;
+    Task<int> UpdateAsync<T>(T item) where T : IDataObjectBase, new();
     Task<int> InsertAllAsync<T>(IEnumerable<T> list) where T : class, IDataObjectBase, new();
     
     void InsertAll<T>(IEnumerable<T> list) where T : class, IDataObjectBase, new();

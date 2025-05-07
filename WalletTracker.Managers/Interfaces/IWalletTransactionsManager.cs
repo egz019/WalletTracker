@@ -8,4 +8,5 @@ public interface IWalletTransactionsManager : IManager
     Task<WalletTransactionsEntity> GetWalletTransactionAsync(string transactionId);
     Task<bool> SaveWalletTransactionAsync(WalletTransactionsEntity walletTransaction);
     void SaveWalletTransactions(List<WalletTransactionsEntity> walletTransactions);
+    Task<bool> UpdateWalletTransactionAsync(WalletTransactionsEntity walletTransaction);
 }

@@ -8,4 +8,5 @@ public interface IWalletTransactionsRepository : IRepository
     Task<List<WalletTransactionsDto>> GetWalletTransactionsAsync();
     Task<int> SaveWalletTransactionAsync(WalletTransactionsDto walletTransaction);
     void SaveWalletTransactions(List<WalletTransactionsDto> walletTransactions);
+    Task<int> UpdateWalletTransactionAsync(WalletTransactionsDto walletTransaction);
 }

@@ -39,6 +39,22 @@ public class WalletTransactionsRepository : RepositoryBase, IWalletTransactionsR
         return await DB.InsertAsync(walletTransaction);
     }
 
+	public async Task<int> UpdateWalletTransactionAsync(WalletTransactionsDto walletTransaction)
+	{
+		var model = new WalletTransactionsDto
+		{
+			TransactionId = walletTransaction.TransactionId,
+			BudgetType = walletTransaction.BudgetType,
+			BudgetSubType = walletTransaction.BudgetSubType,
+			Amount = walletTransaction.Amount,
+			TransactionDate = walletTransaction.TransactionDate,
+			Description = walletTransaction.Description,
+		};
+
+		await DeleteWalletTransactionAsync(walletTransaction.TransactionId);
+		return await DB.InsertAsync(model);
+	}
+
     public void SaveWalletTransactions(List<WalletTransactionsDto> walletTransactions)
     {
         DB.InsertAll(walletTransactions);

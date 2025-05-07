@@ -53,12 +53,12 @@ public class MobileDatabase : IMobileDatabase
     public async Task<int> InsertAllAsync<T>(IEnumerable<T> list) where T : class, IDataObjectBase, new()
       => await _dbAsyncConnection.InsertAllAsync(list, typeof(T));
 
-    public async Task<int> UpdateAsync<T>(T item) where T : IDataObjectBase
+    public async Task<int> UpdateAsync<T>(T item) where T : IDataObjectBase, new()
     {
-        item.Modified = DateTime.Now;
+        item.Modified = DateTime.UtcNow;
         return await _dbAsyncConnection.UpdateAsync(item);
     }
-
+    
     public Task<int> DeleteAllAsync<T>() where T : IDataObjectBase, new()
         => _dbAsyncConnection.DeleteAllAsync<T>();
 
