@@ -1,3 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg width="800px" height="800px" viewBox="0 0 1024 1024" fill="#000000" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M32 241.6c-11.2 0-20-8.8-20-20s8.8-20 20-20l940 1.6c11.2 0 20 8.8 20 20s-8.8 20-20 20L32 241.6zM186.4 282.4c0-11.2 8.8-20 20-20s20 8.8 20 20v688.8l585.6-6.4V289.6c0-11.2 8.8-20 20-20s20 8.8 20 20v716.8l-666.4 7.2V282.4z" fill="" /><path d="M682.4 867.2c-11.2 0-20-8.8-20-20V372c0-11.2 8.8-20 20-20s20 8.8 20 20v475.2c0.8 11.2-8.8 20-20 20zM367.2 867.2c-11.2 0-20-8.8-20-20V372c0-11.2 8.8-20 20-20s20 8.8 20 20v475.2c0.8 11.2-8.8 20-20 20zM524.8 867.2c-11.2 0-20-8.8-20-20V372c0-11.2 8.8-20 20-20s20 8.8 20 20v475.2c0.8 11.2-8.8 20-20 20zM655.2 213.6v-48.8c0-17.6-14.4-32-32-32H418.4c-18.4 0-32 14.4-32 32.8V208h-40v-42.4c0-40 32.8-72.8 72.8-72.8H624c40 0 72.8 32.8 72.8 72.8v48.8h-41.6z" fill="" /></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1080" height="1080" viewBox="0 0 1080 1080" xml:space="preserve">
+<desc>Created with Fabric.js 5.2.4</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 540 540)" id="86846794-2bbe-45b1-a887-4444cce58c15"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-540" y="-540" rx="0" ry="0" width="1080" height="1080" />
+</g>
+<g transform="matrix(1 0 0 1 540 540)" id="2f0a0a50-6bcd-4d94-9e44-4032b509cb92"  >
+</g>
+<g transform="matrix(1 0 0 1 540 540)"  >
+<g style="" vector-effect="non-scaling-stroke"   >
+		<g transform="matrix(0.78 0 0 0.78 0 42.5)"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(189,65,65); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-502, -607.6)" d="M 32 241.6 C 20.8 241.6 12 232.79999999999998 12 221.6 C 12 210.4 20.8 201.6 32 201.6 L 972 203.2 C 983.2 203.2 992 212 992 223.2 C 992 234.39999999999998 983.2 243.2 972 243.2 L 32 241.6 z M 186.4 282.4 C 186.4 271.2 195.20000000000002 262.4 206.4 262.4 C 217.6 262.4 226.4 271.2 226.4 282.4 L 226.4 971.1999999999999 L 812 964.8 L 812 289.6 C 812 278.40000000000003 820.8 269.6 832 269.6 C 843.2 269.6 852 278.40000000000003 852 289.6 L 852 1006.4 L 185.60000000000002 1013.6 L 185.60000000000002 282.4 z" stroke-linecap="round" />
+</g>
+		<g transform="matrix(0.78 0 0 0.78 17.52 -57.19)"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(189,65,65); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-524.42, -480)" d="M 682.4 867.2 C 671.1999999999999 867.2 662.4 858.4000000000001 662.4 847.2 L 662.4 372 C 662.4 360.8 671.1999999999999 352 682.4 352 C 693.6 352 702.4 360.8 702.4 372 L 702.4 847.2 C 703.1999999999999 858.4000000000001 693.6 867.2 682.4 867.2 z M 367.2 867.2 C 356 867.2 347.2 858.4000000000001 347.2 847.2 L 347.2 372 C 347.2 360.8 356 352 367.2 352 C 378.4 352 387.2 360.8 387.2 372 L 387.2 847.2 C 388 858.4000000000001 378.4 867.2 367.2 867.2 z M 524.8 867.2 C 513.5999999999999 867.2 504.79999999999995 858.4000000000001 504.79999999999995 847.2 L 504.79999999999995 372 C 504.79999999999995 360.8 513.5999999999999 352 524.8 352 C 536 352 544.8 360.8 544.8 372 L 544.8 847.2 C 545.5999999999999 858.4000000000001 536 867.2 524.8 867.2 z M 655.2 213.6 L 655.2 164.8 C 655.2 147.20000000000002 640.8000000000001 132.8 623.2 132.8 L 418.4 132.8 C 400 132.8 386.4 147.20000000000002 386.4 165.60000000000002 L 386.4 208 L 346.4 208 L 346.4 165.6 C 346.4 125.6 379.2 92.8 419.2 92.8 L 624 92.8 C 664 92.8 696.8 125.6 696.8 165.6 L 696.8 214.39999999999998 L 655.1999999999999 214.39999999999998 z" stroke-linecap="round" />
+</g>
+</g>
+</g>
+</svg>

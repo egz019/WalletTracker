@@ -65,7 +65,7 @@
                     Grid.ColumnSpan="2"
                     HorizontalOptions="FillAndExpand"
                     Orientation="Horizontal">
-                    <CheckBox IsChecked="{Binding ShowCurrentMonthTransactions}" Color="Black" />
+                    <CheckBox IsChecked="{Binding ShowCurrentMonthTransactions}" Color="Black" Margin="0,0,4,0"/>
                     <Label Text="Show Current Month Transactions" VerticalOptions="Center" />
                 </StackLayout>
 
@@ -96,7 +96,7 @@
                                 <SwipeItems Mode="Reveal">
                                     <SwipeItemView>
                                         <Grid ColumnDefinitions="80,80" WidthRequest="160" HeightRequest="90">
-                                            <StackLayout Grid.Column="0" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <StackLayout Grid.Column="0" BackgroundColor="{x:StaticResource Tertiary}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                                 <ImageButton
                                                     Margin="8,12,8,8"
                                                     Source="ic_delete"
@@ -111,7 +111,7 @@
                                                     </Label.GestureRecognizers>
                                                 </Label>
                                             </StackLayout>
-                                            <StackLayout Grid.Column="1" BackgroundColor="Green" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <StackLayout Grid.Column="1" BackgroundColor="{x:StaticResource Tertiary}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                                 <ImageButton
                                                     Margin="8,12,8,8"
                                                     Source="ic_edit"
