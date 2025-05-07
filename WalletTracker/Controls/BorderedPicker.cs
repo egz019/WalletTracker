@@ -78,4 +78,11 @@ public class BorderedPicker : Microsoft.Maui.Controls.Picker
         get => (ImageSource)GetValue(ImageProperty);
         set => SetValue(ImageProperty, value);
     }
+
+    public static readonly BindableProperty EnabledProperty = BindableProperty.Create(nameof(Enabled), typeof(bool), typeof(BorderedDatePicker), defaultValue: true);
+    public bool Enabled
+    {
+        get => (bool)GetValue(EnabledProperty);
+        set => SetValue(EnabledProperty, value);
+    }
 }

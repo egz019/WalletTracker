@@ -36,6 +36,8 @@ public static class DatePickerMapper
                 var icon = await ConvertImageSourceToBitmapAsync(datePicker.Image);
                 nativeDatePicker.PlatformView.SetCompoundDrawablesWithIntrinsicBounds(null, null, new BitmapDrawable(handler.MauiContext.Context.Resources, icon), null);
             }
+
+            nativeDatePicker.PlatformView.Enabled = datePicker.Enabled;
         }
     }
 

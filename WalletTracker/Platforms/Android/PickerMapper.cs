@@ -51,6 +51,8 @@ public static class PickerMapper
                 icon = Bitmap.CreateScaledBitmap(icon, (int)ContextExtensions.ToPixels(handler.MauiContext.Context, 25), (int)ContextExtensions.ToPixels(handler.MauiContext.Context, 25), true);
                 nativePicker.PlatformView.SetCompoundDrawablesWithIntrinsicBounds(null, null, new BitmapDrawable(handler.MauiContext.Context.Resources, icon), null);
             }
+
+            nativePicker.PlatformView.Enabled = picker.Enabled;
         }
     }
 

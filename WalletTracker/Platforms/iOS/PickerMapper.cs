@@ -53,6 +53,8 @@ public static class PickerMapper
                 }));
                 //control.RightView.ContentMode = UIViewContentMode.ScaleAspectFit;
                 // control.RightView.Frame = new CoreGraphics.CGRect(0, 0, downArrow.Size.Width, downArrow.Size.Height);
+
+                control.Enabled = picker.Enabled;
             }
         }
         }

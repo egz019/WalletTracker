@@ -52,6 +52,8 @@ public static class DatePickerMapper
                 control.BecomeFirstResponder();
                 control.SendActionForControlEvents(UIControlEvent.TouchUpInside);
             }));
+
+            control.Enabled = datePicker.Enabled;
         }
     }
 
