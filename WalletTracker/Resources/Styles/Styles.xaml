@@ -20,6 +20,7 @@ xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker">
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="BackgroundColor" Value="Gray" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -47,6 +48,7 @@ xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker">
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="BackgroundColor" Value="Gray" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -71,6 +73,7 @@ xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker">
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="BackgroundColor" Value="Gray" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -89,6 +92,7 @@ xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker">
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="BackgroundColor" Value="Gray" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -105,6 +109,7 @@ xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker">
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
                             <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="BackgroundColor" Value="Gray" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>

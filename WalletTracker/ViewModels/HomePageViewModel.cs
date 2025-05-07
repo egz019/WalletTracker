@@ -1,16 +1,19 @@
-﻿namespace WalletTracker.ViewModels;
+﻿using WalletTracker.Extensions;
+
+namespace WalletTracker.ViewModels;
 
 public partial class HomePageViewModel : PageViewModelBase
 {
     private readonly IWalletTransactionsManager _walletTransactionManager;
     private readonly IPreDataManager _preDataManager;
-
     private List<BudgetSubTypeEntity> _budgetSubTypes;
     private List<BudgetTypeEntity> _budgetTypes;
 
     private List<WalletTransactionsEntity> _transactions;
 
-    public HomePageViewModel(BaseServices baseServices, IWalletTransactionsManager walletTransactionManager, IPreDataManager preDataManager) : base(baseServices)
+    public HomePageViewModel(BaseServices baseServices, 
+                            IWalletTransactionsManager walletTransactionManager, 
+                            IPreDataManager preDataManager) : base(baseServices)
     {
         _walletTransactionManager = walletTransactionManager;
         _preDataManager = preDataManager;
@@ -31,27 +34,10 @@ public partial class HomePageViewModel : PageViewModelBase
         _budgetSubTypes =  _preDataManager.BudgetSubTypes.ToList();
 
         _transactions = await _walletTransactionManager.GetListOfWalletTransactionsAsync();
+
         WalletTransactionList = [.. _transactions
         .Where(x => x.TransactionDate.Month == DateTime.Now.Month && x.TransactionDate.Year == DateTime.Now.Year)
-        .Select(x => new WalletItemTransactionModel
-        {
-            TransactionId = x.TransactionId,
-            BudgetType = new BudgetTypeModel()
-            { 
-                Code = x.BudgetType, 
-                Description = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).Description,
-                IsAdd = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).IsAdd
-            },
-            BudgetSubType = new BudgetSubTypeModel()
-            { 
-                Code = x.BudgetSubType, 
-                Description = _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description,
-                Icon = _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Icon,
-            },
-            Amount = x.Amount,
-            Description = x.Description,
-            TransactionDate = x.TransactionDate,
-        })];
+        .Select(x => x.FromEntityToModel(_preDataManager))];
 
         Top5WalletTransactionList = [.. WalletTransactionList.Take(5)];
 
@@ -81,27 +67,10 @@ public partial class HomePageViewModel : PageViewModelBase
     private async Task RefreshWalletTransactions()
     {
         _transactions = await _walletTransactionManager.GetListOfWalletTransactionsAsync();
+
         WalletTransactionList = [.. _transactions
         .Where(x => x.TransactionDate.Month == DateTime.Now.Month && x.TransactionDate.Year == DateTime.Now.Year)
-        .Select(x => new WalletItemTransactionModel
-        {
-            TransactionId = x.TransactionId,
-            BudgetType = new BudgetTypeModel()
-            { 
-                Code = x.BudgetType, 
-                Description = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).Description,
-                IsAdd = _budgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).IsAdd
-            },
-            BudgetSubType = new BudgetSubTypeModel()
-            { 
-                Code = x.BudgetSubType, 
-                Description = _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description,
-                Icon = _budgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Icon,
-            },
-            Amount = x.Amount,
-            Description = x.Description,
-            TransactionDate = x.TransactionDate,
-        })];
+        .Select(x => x.FromEntityToModel(_preDataManager))];
 
         GetTotalAmountPerBudgetType();
 

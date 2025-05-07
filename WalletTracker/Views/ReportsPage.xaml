@@ -108,7 +108,7 @@
                     HorizontalOptions="FillAndExpand"
                     Orientation="Horizontal"
                     VerticalOptions="FillAndExpand">
-                    <CheckBox IsChecked="{Binding ExcludeTransfers}" Color="Black" />
+                    <CheckBox IsChecked="{Binding ExcludeTransfers}" Color="Black" Margin="0,0,4,0" />
                     <Label Text="Exclude Income" HorizontalOptions="End" VerticalOptions="Center" />
                 </StackLayout>
 
@@ -122,7 +122,8 @@
             </Grid>
         <!-- </Border> -->
 
-        <Border BackgroundColor="White" 
+        <Border BackgroundColor="White"
+            Padding="0"
             HeightRequest="{OnPlatform Android=500, iOS=400, Default=500}">
             <Border.Stroke>
                 <SolidColorBrush Color="#4a6f8c" />
@@ -134,13 +135,13 @@
                 <Shadow Brush="#4a6f8c" Radius="5" />
             </Border.Shadow>
 
-<!-- ios 400 -->
+            <!-- ios 400 -->
             <ScrollView
                 HeightRequest="{OnPlatform Android=380, iOS=380, Default=380}"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand">
 
-                <Grid Margin="4"
+                <Grid Margin="4,2,4,4"
                     HorizontalOptions="FillAndExpand"
                     RowDefinitions="Auto, Auto"
                     RowSpacing="8"
@@ -161,7 +162,7 @@
                         VerticalOptions="FillAndExpand">
 
                         <Label
-                            FontSize="16"
+                            FontSize="18"
                             HorizontalTextAlignment="Center"
                             Text="Main Report" />
 
@@ -180,7 +181,7 @@
                         VerticalOptions="FillAndExpand">
 
                         <Label
-                            FontSize="16"
+                            FontSize="18"
                             HorizontalTextAlignment="Center"
                             Text="{Binding IncomeVsExpenseTitle}" />
 
@@ -202,7 +203,7 @@
                         VerticalOptions="FillAndExpand">
 
                         <Label
-                            FontSize="Title"
+                            FontSize="18"
                             HorizontalTextAlignment="Center"
                             Text="{Binding IncomeVsExpenseTitle}" />
 
