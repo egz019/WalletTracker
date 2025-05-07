@@ -6,6 +6,7 @@
     xmlns:ctrl="clr-namespace:WalletTracker.Controls;assembly=WalletTracker"
     xmlns:material="clr-namespace:Plugin.MaterialDesignControls.Material3;assembly=Plugin.MaterialDesignControls"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModels="clr-namespace:WalletTracker.ViewModels"
     Padding="4,16"
     x:DataType="viewModels:AddNewTransactionPageViewModel"
@@ -13,6 +14,12 @@
     HeightRequest="400"
     NavigationPage.HasNavigationBar="False"
     WidthRequest="800">
+
+     <ContentPage.Resources>
+        <ResourceDictionary>
+            <mct:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
     <VerticalStackLayout Margin="8">
         <ImageButton
@@ -58,7 +65,7 @@
                     ItemDisplayBinding="{Binding Description}"
                     ItemsSource="{Binding BudgetTypes}"
                     Placeholder="Select Budget Type"
-                    SelectedItem="{Binding SelectedBudgetType}" />
+                    SelectedItem="{Binding SelectedBudgetType}"/>
                 <Label
                     Grid.Row="2"
                     Grid.Column="0"
@@ -71,7 +78,7 @@
                     ItemDisplayBinding="{Binding Description}"
                     ItemsSource="{Binding BudgetSubTypes}"
                     Placeholder="Select Budget Sub Type"
-                    SelectedItem="{Binding SelectedBudgetSubType}" />
+                    SelectedItem="{Binding SelectedBudgetSubType}"/>
 
                 <Label
                     Grid.Row="3"

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using WalletTracker.Extensions;
 
 namespace WalletTracker.ViewModels;
 
@@ -36,27 +37,11 @@ public partial class TransactionPageViewModel : PageViewModelBase
     private async Task RefreshWalletTransactions()
     {
         var list = await _walletTransactionsManager.GetListOfWalletTransactionsAsync();
+
         WalletTransactionList = [ .. list
-        .Where(_ => ShowCurrentMonthTransactions ? _.TransactionDate.Month == DateTime.Now.Month : _.TransactionDate.Year == DateTime.Now.Year)
-        .Select(x => new WalletItemTransactionModel
-        {
-            TransactionId = x.TransactionId,
-            BudgetType = new BudgetTypeModel()
-            {
-                Code = x.BudgetType,
-                Description = _preDataManager.BudgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).Description,
-                IsAdd = _preDataManager.BudgetTypes.FirstOrDefault(_ => _.Code == x.BudgetType).IsAdd
-            },
-            BudgetSubType = new BudgetSubTypeModel()
-            {
-                Code = x.BudgetSubType,
-                Description = _preDataManager.BudgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Description,
-                Icon = _preDataManager.BudgetSubTypes.FirstOrDefault(_ => _.Code == x.BudgetSubType).Icon,
-            },
-            Amount = x.Amount,
-            Description = x.Description,
-            TransactionDate = x.TransactionDate,
-        })];
+        .Where(_ => ShowCurrentMonthTransactions ? _.TransactionDate.Month == DateTime.Now.Month && _.TransactionDate.Year == DateTime.Now.Year 
+                : _.TransactionDate.Year == DateTime.Now.Year)
+        .Select(x => x.FromEntityToModel(_preDataManager))];
     }
 
     protected override async Task OnNavigatedToAsync(INavigationParameters parameters)
@@ -85,7 +70,13 @@ public partial class TransactionPageViewModel : PageViewModelBase
     {
         if(oldValue != newValue)
         {
-            MainThread.BeginInvokeOnMainThread(async () => { await RefreshWalletTransactions(); });     
+            if(_searchText != string.Empty)
+            {
+                return;
+            }else
+            {
+                MainThread.BeginInvokeOnMainThread(async () => { await RefreshWalletTransactions(); });
+            }
         }
     }
 
@@ -120,18 +111,43 @@ public partial class TransactionPageViewModel : PageViewModelBase
     }
 
     [RelayCommand]
-    private void Search()
+    private async Task EditTransaction(WalletItemTransactionModel transaction)
+    {
+        if (transaction == null)
+        {
+            return;
+        }
+
+        var navigationParams = new NavigationParameters
+        {
+            { KnownNavigationParameters.UseModalNavigation, true },
+            { KnownNavigationParameters.Animated, true },
+            { "Transaction", transaction }
+        };
+
+        await NavigationService.NavigateAsync($"{nameof(NavigationPage)}/{ViewNames.AddNewTransactionPage}", navigationParams);
+    }
+
+
+    [RelayCommand]
+    private async Task Search()
     {
         if(string.IsNullOrEmpty(SearchText) || WalletTransactionList == null)
         {
             return;
         }
 
-        WalletTransactionList = [.. WalletTransactionList
-        .Where(x => x.TransactionDate.Date.ToShortDateString().Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
+        var fullList = await _walletTransactionsManager.GetListOfWalletTransactionsAsync();
+        
+        WalletTransactionList = [ .. fullList
+        .Select(x => x.FromEntityToModel(_preDataManager))
+        .Where(x => ShowCurrentMonthTransactions ? x.TransactionDate.Month == DateTime.Now.Month && x.TransactionDate.Year == DateTime.Now.Year 
+                : x.TransactionDate.Year == DateTime.Now.Year
+                || x.TransactionDate.Date.ToShortDateString().Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
                 || x.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
                 || x.Amount.ToString().Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
                 || x.BudgetType.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase) 
-                || x.BudgetSubType.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase))];
+                || x.BudgetSubType.Description.Contains(SearchText, StringComparison.InvariantCultureIgnoreCase))
+        ];
     }
 }
